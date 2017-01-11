@@ -1,15 +1,15 @@
 import React from 'react';
 
-const UserSumamry = props => (
+const UserSummary = props => (
     <div>
       <h1>{props.name}</h1>
       <h2>{props.username}</h2>
     </div>
 );
 
-UserSumamry.propTypes = {
+UserSummary.propTypes = {
   username: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired
 };
 
-export default UserSumamry;
+export default UserSummary;
