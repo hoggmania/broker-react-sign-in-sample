@@ -1,15 +1,19 @@
 import React from 'react';
+import { Container, Message, Icon } from 'semantic-ui-react';
 
 const Error = props => (
-    <div className="App">
-      <div className="App-header">
-        <h2>Error</h2>
-      </div>
-      <div className="App-intro">
-        <p>{props.error}</p>
-        <p>{props.errorDetail}</p>
-      </div>
-    </div>
+    <Container>
+      <Message error icon>
+        <Icon name="circle warning"/>
+        <Message.Content>
+          <Message.Header>
+            Error
+          </Message.Header>
+          <p>{props.error}</p>
+          <p>{props.errorDetail}</p>
+        </Message.Content>
+      </Message>
+    </Container>
 );
 
 Error.propTypes = {

@@ -3,7 +3,7 @@ import objectPath from 'object-path';
 // This is a limited implementation of a SCIM object. The full path and
 // filter capabilities of the SCIM standard are not supported.
 
-class Scim {
+class ScimResource {
   constructor(data) {
     this.data = data;
   }
@@ -66,4 +66,4 @@ class Scim {
   }
 }
 
-export default Scim;
+export default ScimResource;

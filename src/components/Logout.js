@@ -1,5 +1,6 @@
 import React from 'react';
 import { logoutUrl } from '../util/Helpers';
+import { Container, Button } from 'semantic-ui-react';
 
 const Logout = ({props}) => {
   const redirect = (event) => {
@@ -9,9 +10,14 @@ const Logout = ({props}) => {
   };
 
   return (
-      <div>
-        <button onClick={redirect}>Sign out</button>
-      </div>
+      <Container>
+        <Button
+            icon="sign out"
+            labelPosition="left"
+            content="Sign out"
+            onClick={redirect}
+        />
+      </Container>
   );
 };
 

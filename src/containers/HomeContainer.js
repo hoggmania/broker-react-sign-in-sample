@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import LayoutContainer from '../containers/LayoutContainer';
 import Home from '../components/Home';
 import Error from '../components/Error';
 import ReactRedirect from 'react-redirect';
+import ScimResource from '../util/Scim';
 import { authorizationUrl, getUserData } from '../util/Helpers';
 
 class HomeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-      data: {}
+      isLoading: true
     };
   }
 
@@ -32,7 +33,7 @@ class HomeContainer extends Component {
           .then(json => {
             this.setState({
               isLoading: false,
-              data: json
+              user: new ScimResource(json)
             });
           });
     } else {
@@ -43,15 +44,19 @@ class HomeContainer extends Component {
   render() {
     if (this.state.error) {
       return (
-          <Error error={this.state.error}/>
+          <LayoutContainer>
+            <Error error={this.state.error}/>
+          </LayoutContainer>
       );
     }
     return this.props.accessToken
         ? (
-            <Home
-                isLoading={this.state.isLoading}
-                data={this.state.data}
-            />
+            <LayoutContainer>
+              <Home
+                  isLoading={this.state.isLoading}
+                  user={this.state.user}
+              />
+            </LayoutContainer>
         )
         : (
             <ReactRedirect

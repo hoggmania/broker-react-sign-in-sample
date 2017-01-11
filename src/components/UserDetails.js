@@ -1,6 +1,8 @@
 import React from 'react';
-import Scim from '../util/Scim';
+import ScimResource from '../util/Scim';
 import { SCHEMA } from '../Config';
+import { Container, Table } from 'semantic-ui-react';
+import './UserDetails.css';
 
 const UserDetails = props => {
   const valueOrNull = (value) => {
@@ -11,48 +13,43 @@ const UserDetails = props => {
     return null;
   };
   const attributes = () => {
-    const scimUser = new Scim(props.data);
     let attrs = {};
-    attrs['id'] = scimUser.getId();
-    attrs['username'] = scimUser.getValue(SCHEMA.username);
-    attrs['name'] = scimUser.getValue(SCHEMA.fullName);
-    attrs['email'] = valueOrNull(scimUser.getValue(SCHEMA.email));
-    attrs['phone'] = valueOrNull(scimUser.getValue(SCHEMA.phone));
+    attrs['id'] = props.user.getId();
+    attrs['username'] = props.user.getValue(SCHEMA.username);
+    attrs['name'] = props.user.getValue(SCHEMA.fullName);
+    attrs['email'] = valueOrNull(props.user.getValue(SCHEMA.email));
+    attrs['phone'] = valueOrNull(props.user.getValue(SCHEMA.phone));
     return attrs;
   };
   let attrs = attributes();
   return (
-      <table>
-        <thead>
-          <tr>
-            <td>attr</td>
-            <td>value</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>username</td>
-            <td>{attrs.username}</td>
-          </tr>
-          <tr>
-            <td>name</td>
-            <td>{attrs.name}</td>
-          </tr>
-          <tr>
-            <td>email</td>
-            <td>{attrs.email}</td>
-          </tr>
-          <tr>
-            <td>phone</td>
-            <td>{attrs.phone}</td>
-          </tr>
-        </tbody>
-      </table>
+      <Container className="UserDetails">
+        <Table definition>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>Username</Table.Cell>
+              <Table.Cell>{attrs.username}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Name</Table.Cell>
+              <Table.Cell>{attrs.name}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Email address</Table.Cell>
+              <Table.Cell>{attrs.email}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Phone number</Table.Cell>
+              <Table.Cell>{attrs.phone}</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </Container>
   );
 };
 
 UserDetails.propTypes = {
-  data: React.PropTypes.object.isRequired
+  user: React.PropTypes.instanceOf(ScimResource)
 };
 
 export default UserDetails;

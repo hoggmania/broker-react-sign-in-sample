@@ -1,32 +1,28 @@
 import React from 'react';
 import Loading from './Loading';
-import UserSummary from './UserSummary';
+import SignedInMessage from './SignedInMessage';
 import UserDetails from './UserDetails';
 import Logout from './Logout';
-import Scim from '../util/Scim';
-import { SCHEMA } from '../Config';
+import ScimResource from '../util/Scim';
+import { Container } from 'semantic-ui-react';
 
 const Home = props => {
-  const scimUser = new Scim(props.data);
   return props.isLoading === true
       ? (
           <Loading/>
       )
       : (
-          <div>
-            <UserSummary
-                username={scimUser.getValue(SCHEMA.username)}
-                name={scimUser.getValue(SCHEMA.fullName)}
-            />
-            <UserDetails data={props.data}/>
+          <Container>
+            <SignedInMessage user={props.user}/>
+            <UserDetails user={props.user}/>
             <Logout/>
-          </div>
+          </Container>
       );
 };
 
 Home.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
-  data: React.PropTypes.object.isRequired
+  user: React.PropTypes.instanceOf(ScimResource)
 };
 
 export default Home;

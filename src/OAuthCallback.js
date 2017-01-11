@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
 import { parseParamsFromUrl } from './util/Helpers';
 import { setConfig } from './util/Storage';
+import LayoutContainer from './containers/LayoutContainer';
 import Error from './components/Error';
 import ReactRedirect from 'react-redirect';
+import { Container } from 'semantic-ui-react';
+import './App.css';
 
 class OAuthCallback extends Component {
   constructor(props) {
@@ -36,7 +38,11 @@ class OAuthCallback extends Component {
   render() {
     if (this.error) {
       return (
-          <Error error={this.error} errorDetail={this.errorDetail}/>
+          <Container className="App">
+            <LayoutContainer>
+              <Error error={this.error} errorDetail={this.errorDetail}/>
+            </LayoutContainer>
+          </Container>
       );
     } else {
       return (

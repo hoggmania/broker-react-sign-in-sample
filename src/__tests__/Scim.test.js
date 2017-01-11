@@ -1,4 +1,4 @@
-import Scim from '../util/Scim';
+import ScimResource from '../util/Scim';
 
 const testJson = `
 {
@@ -68,23 +68,23 @@ const testJson = `
 
 describe('The SCIM parser', () => {
   it('can retrieve the resource ID', () => {
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     expect(user.getId()).toEqual('2f05b231-8c9d-481d-8b6f-ceefac6852eb');
   });
 
   it('can retrieve resource metadata', () => {
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     expect(user.getMeta().resourceType).toEqual('Users');
   });
 
   it('can retrieve the schema URNs', () => {
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     expect(user.getSchemaUrns()).toContain('urn:pingidentity:schemas:User:1.0');
     expect(user.getSchemaUrns()).toContain('urn:pingidentity:schemas:sample:profile:1.0');
   });
 
   it('can retrieve the value of a simple attribute', () => {
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     expect(user.getValue('userName')).toEqual('cesar.aira');
   });
 
@@ -99,7 +99,7 @@ describe('The SCIM parser', () => {
       primary: false,
       type: "work"
     };
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     let emails = user.getValue('emails');
     expect(emails).toContainEqual(expectedHomeEmail);
     expect(emails).toContainEqual(expectedWorkEmail);
@@ -116,14 +116,14 @@ describe('The SCIM parser', () => {
       primary: false,
       type: "work"
     };
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     expect(user.getValue('emails[type eq "home"]')).toEqual(expectedHomeEmail);
     expect(user.getValue('emails[type eq "work"]')).toEqual(expectedWorkEmail);
     expect(user.getValue('emails[primary eq true]')).toEqual(expectedHomeEmail);
   });
 
   it('does not support operators other than "eq"', () => {
-    let user = new Scim(JSON.parse(testJson));
+    let user = new ScimResource(JSON.parse(testJson));
     expect(user.getValue('emails[value sw "César"]')).toThrow();
   });
 });

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
 import HomeContainer from './containers/HomeContainer';
 import { getConfig } from './util/Storage';
 import { deleteConfig } from './util/Storage';
 import { APP_SETTINGS } from './Config';
+import { Container } from 'semantic-ui-react';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -32,9 +33,12 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <HomeContainer accessToken={this.accessToken} idToken={this.idToken}/>
-      </div>
+      <Container className="App">
+        <HomeContainer
+            accessToken={this.accessToken}
+            idToken={this.idToken}
+        />
+      </Container>
     );
   }
 }
