@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import LayoutContainer from '../containers/LayoutContainer';
+import Login from '../components/Login';
 import Home from '../components/Home';
 import Error from '../components/Error';
-import ReactRedirect from 'react-redirect';
 import ScimResource from '../util/Scim';
-import { authorizationUrl, getUserData } from '../util/Helpers';
+import { getUserData } from '../util/Helpers';
 
 class HomeContainer extends Component {
   constructor(props) {
@@ -17,6 +17,8 @@ class HomeContainer extends Component {
   componentDidMount() {
     console.log('accessToken: ', this.props.accessToken);
     console.log('idToken: ', this.props.idToken);
+
+    // TODO: Validate ID token
 
     if (this.props.accessToken) {
       console.log("Fetching user resource");
@@ -37,7 +39,7 @@ class HomeContainer extends Component {
             });
           });
     } else {
-      console.log("Redirecting to auth server");
+      console.log("No access token found");
     }
   }
 
@@ -59,9 +61,9 @@ class HomeContainer extends Component {
             </LayoutContainer>
         )
         : (
-            <ReactRedirect
-                location={authorizationUrl().toString()}
-            />
+            <LayoutContainer>
+              <Login/>
+            </LayoutContainer>
         );
   }
 }
