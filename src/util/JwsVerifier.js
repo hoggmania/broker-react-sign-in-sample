@@ -33,7 +33,9 @@ class JwsVerifier {
         return null;
       })
     }
-    return KJUR.jws.JWS.verifyJWT(jwt, JwsVerifier._jwkToPublicKey(jwk), claims);
+    if (!KJUR.jws.JWS.verifyJWT(jwt, JwsVerifier._jwkToPublicKey(jwk), claims)) {
+      throw new Error("ID token validation failed");
+    }
   }
 }
 

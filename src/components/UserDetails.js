@@ -20,6 +20,7 @@ const UserDetails = props => {
     attrs['name'] = props.user.getValue(SCHEMA.fullName);
     attrs['email'] = value(props.user.getValue(SCHEMA.email));
     attrs['phone'] = value(props.user.getValue(SCHEMA.phone));
+    attrs['birthday'] = props.user.getValue(SCHEMA.birthday);
     return attrs;
   };
 

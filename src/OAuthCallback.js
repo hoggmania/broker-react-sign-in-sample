@@ -25,7 +25,10 @@ class OAuthCallback extends Component {
   checkState(expectedState, actualState) {
     console.log('Confirming state received from auth server matches');
     if (expectedState !== actualState) {
-      this.error = 'Expected state value not received from auth server';
+      console.warn('State mismatch');
+      this.setState({
+        error: 'Expected state value not received from auth server.'
+      });
     }
   }
 
@@ -47,16 +50,18 @@ class OAuthCallback extends Component {
         aud: [ OAUTH_CLIENT.clientId ],
         gracePeriod: OIDC.gracePeriod
       };
-      const valid = JwsVerifier.verify(idToken, jwk, expectedClaims);
 
-      if (valid) {
+      try {
+        JwsVerifier.verify(idToken, jwk, expectedClaims);
         console.log('Validated ID token');
         this.setState({
           ready: true
         });
-      } else {
-        console.log('ID token is invalid');
-        this.error = 'ID token validation failed.';
+      } catch (e) {
+        console.warn('ID token is invalid', e);
+        this.setState({
+          error: 'ID token validation failed.'
+        });
       }
     });
   }
@@ -77,11 +82,15 @@ class OAuthCallback extends Component {
       }
     } else {
       if (params['error']) {
-        this.error = params['error'];
+        this.setState({
+          error: params['error']
+        });
       }
 
       if (params['error_description']) {
-        this.errorDetail = params['error_description'];
+        this.setState({
+          errorDetail: params['error_description']
+        });
       }
 
       this.setState({
@@ -95,11 +104,14 @@ class OAuthCallback extends Component {
   }
 
   render() {
-    if (this.error) {
+    if (this.state.error) {
       return (
           <Container className="App">
             <LayoutContainer>
-              <Error error={this.error} errorDetail={this.errorDetail}/>
+              <Error
+                  error={this.state.error}
+                  errorDetail={this.state.errorDetail}
+              />
             </LayoutContainer>
           </Container>
       );

@@ -15,14 +15,18 @@ const gracePeriod = Math.floor(new Date() / 1000);
 
 describe('The JWS verifier', () => {
   it('can verify a valid JWS', () => {
-    expect(JwsVerifier.verify(rsaJws, jwk, { alg: [ 'RS256' ], gracePeriod: gracePeriod})).toBeTruthy();
+    expect(() => {
+      JwsVerifier.verify(rsaJws, jwk, { alg: [ 'RS256' ], gracePeriod: gracePeriod});
+    }).not.toThrow();
   });
 
   it('rejects an HMAC-signed JWS', () => {
     expect(() => {
-      JwsVerifier.verify(hmacJws, jwk, { alg: [ 'HS256' ], gracePeriod: gracePeriod })
+      JwsVerifier.verify(hmacJws, jwk, { alg: [ 'HS256' ], gracePeriod: gracePeriod });
     }).toThrow();
-    expect(JwsVerifier.verify(hmacJws, jwk, { gracePeriod: gracePeriod })).toBeFalsy();
+    expect(() => {
+      JwsVerifier.verify(hmacJws, jwk, { gracePeriod: gracePeriod });
+    }).toThrow();
   });
 
   it ('rejects a completely invalid JWT', () => {
