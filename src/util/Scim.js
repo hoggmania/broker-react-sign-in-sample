@@ -6,6 +6,7 @@ import objectPath from 'object-path';
 class ScimResource {
   constructor(data) {
     this.data = data;
+    this._checkForExtensionAttribute = this._checkForExtensionAttribute.bind(this);
   }
 
   _parseValueFilter(path) {
@@ -34,11 +35,27 @@ class ScimResource {
     return this.getValue('schemas');
   }
 
-  _getValueFromFilter(attributePath, filterAttribute, operator, filterValue) {
+  _checkForExtensionAttribute(path) {
+    const EXTENSION_FILTER_RX = /((urn:.+):)(\w+)/;
+    let match = EXTENSION_FILTER_RX.exec(path);
+    if (match) {
+      return {
+        path: match[3],
+        object: this.data[match[2]]
+      }
+    } else {
+      return {
+        path: path,
+        object: this.data
+      }
+    }
+  }
+
+  _getValueFromFilter(obj, attributePath, filterAttribute, operator, filterValue) {
     if (operator !== 'eq') {
       throw new Error(`The '${operator}' operator is unsupported`);
     }
-    let complexValue = objectPath.get(this.data, attributePath);
+    let complexValue = objectPath.get(obj, attributePath);
     return complexValue.find(attr => {
       if (typeof(attr[filterAttribute]) === "boolean") {
         return attr[filterAttribute].toString() === filterValue;
@@ -48,10 +65,15 @@ class ScimResource {
   }
 
   getValue(path) {
-    let parsedForValueFilter = this._parseValueFilter(path);
+    let extensionCheck = this._checkForExtensionAttribute(path);
+    let targetObject = extensionCheck.object;
+    let attributePath = extensionCheck.path;
+
+    let parsedForValueFilter = this._parseValueFilter(attributePath);
     if (parsedForValueFilter) {
       try {
         return this._getValueFromFilter(
+            targetObject,
             parsedForValueFilter.attribute,
             parsedForValueFilter.filterAttribute,
             parsedForValueFilter.operator,
@@ -62,7 +84,7 @@ class ScimResource {
         return null;
       }
     }
-    return objectPath.get(this.data, path);
+    return objectPath.get(targetObject, attributePath);
   }
 }
 

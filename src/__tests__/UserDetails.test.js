@@ -39,7 +39,7 @@ const testJson = `
         "givenName": "César"
     },
     "urn:pingidentity:schemas:sample:profile:1.0": {
-        "birthDate": "1998-02-20",
+        "birthDate": "1949-02-23",
         "topicPreferences": [
             {
                 "id": "urn:X-pingidentity:topic:auto:maintenance",
@@ -79,5 +79,6 @@ describe('The UserDetails component', () => {
     expect(wrapper.find('#userDetails-name').childAt(0).text()).toEqual('César Aira');
     expect(wrapper.find('#userDetails-email').childAt(0).text()).toEqual('cesar.aira@gmail.com');
     expect(wrapper.find('#userDetails-phone').childAt(0).text()).toEqual('+54 902 987 8135');
+    expect(wrapper.find('#userDetails-birthday').childAt(0).text()).toEqual('1949-02-23');
   });
 });

@@ -36,7 +36,7 @@ const testJson = `
         "givenName": "César"
     },
     "urn:pingidentity:schemas:sample:profile:1.0": {
-        "birthDate": "1998-02-20",
+        "birthDate": "1949-02-23",
         "topicPreferences": [
             {
                 "id": "urn:X-pingidentity:topic:auto:maintenance",
@@ -125,5 +125,10 @@ describe('The SCIM parser', () => {
   it('does not support operators other than "eq"', () => {
     let user = new ScimResource(JSON.parse(testJson));
     expect(user.getValue('emails[value sw "César"]')).toThrow();
+  });
+
+  it('can retrieve the value of a simple extension attribute', () => {
+    let user = new ScimResource(JSON.parse(testJson));
+    expect(user.getValue('urn:pingidentity:schemas:sample:profile:1.0:birthDate')).toEqual('1949-02-23');
   });
 });
