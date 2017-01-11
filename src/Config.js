@@ -30,6 +30,7 @@ export const SCHEMA = {
 
 // General application settings.
 export const APP_SETTINGS = {
+  rootUri: 'http://localhost:3000/',
   // If false, access and ID tokens are persisted to browser storage
   // only long enough to redirect from the callback endpoint to the
   // main app. If true, they are persisted for the duration of the
