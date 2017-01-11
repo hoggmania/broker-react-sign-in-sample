@@ -1,12 +1,16 @@
 import React from 'react';
-import { logoutUrl } from '../util/Helpers';
+import { guid, logoutUrl } from '../util/Helpers';
+import Storage from '../util/Storage';
 import { Container, Button } from 'semantic-ui-react';
 
 const Logout = ({props}) => {
   const redirect = (event) => {
     console.log("Logging out");
     event.preventDefault();
-    window.location = logoutUrl().toString();
+    const state = guid();
+    let storage = new Storage();
+    storage.setConfig('state', state);
+    window.location = logoutUrl(state).toString();
   };
 
   return (

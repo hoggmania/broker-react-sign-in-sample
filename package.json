@@ -49,6 +49,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "jsrsasign": "^7.0.0",
     "object-path": "^0.11.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

@@ -12,10 +12,23 @@ export const OAUTH_CLIENT = {
   maxAge: ''
 };
 
+export const OIDC = {
+  // The auth server's issuer ID.
+  issuer: 'https://example.com',
+  // The JWT signing algorithm.
+  jwa: 'RS256',
+  // The JWK that contains the JWT's public signing key.
+  jwkId: 'rsa-idtoken',
+  // A grace period in seconds for verifying time-based claims
+  // (e.g., 'iat', 'exp').
+  gracePeriod: 15
+};
+
 // Data Governance Broker service URLs.
 export const BROKER = {
   authorizeEndpoint: 'https://example.com/oauth/authorize',
   logoutEndpoint: 'https://example.com/oauth/logout',
+  jwksEndpoint: 'https://example.com/jwks',
   meEndpoint: 'https://example.com/scim/v2/Me'
 };
 

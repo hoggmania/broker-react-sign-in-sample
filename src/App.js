@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import HomeContainer from './containers/HomeContainer';
+import MainContainer from './containers/MainContainer';
 import Storage from './util/Storage';
 import { APP_SETTINGS } from './Config';
 import { Container } from 'semantic-ui-react';
@@ -25,6 +25,14 @@ class App extends Component {
         storage.deleteConfig('idToken');
       }
     }
+    if (storage.getConfig('state')) {
+      this.state = storage.getConfig('state');
+      storage.deleteConfig('state');
+    }
+    if (storage.getConfig('nonce')) {
+      this.nonce = storage.getConfig('nonce');
+      storage.deleteConfig('nonce');
+    }
   }
 
   componentWillMount() {
@@ -34,7 +42,9 @@ class App extends Component {
   render() {
     return (
       <Container className="App">
-        <HomeContainer
+        <MainContainer
+            state={this.state}
+            nonce={this.nonce}
             accessToken={this.accessToken}
             idToken={this.idToken}
         />

@@ -34,17 +34,18 @@ function parseParams(rawParams) {
   return params;
 }
 
-export function authorizationUrl() {
-  const state = guid();
-  const nonce = guid();
-
+export function authorizationUrl(state, nonce) {
   let url = URI(BROKER.authorizeEndpoint)
       .addQuery('client_id', OAUTH_CLIENT.clientId)
       .addQuery('response_type', OAUTH_CLIENT.responseType)
       .addQuery('scope', OAUTH_CLIENT.scope)
       .addQuery('redirect_uri', OAUTH_CLIENT.redirectUri)
-      .addQuery('state', state)
-      .addQuery('nonce', nonce);
+  if (state) {
+    url.addQuery('state', state);
+  }
+  if (nonce) {
+    url.addQuery('nonce', nonce);
+  }
   if (OAUTH_CLIENT.prompt) {
     url.addQuery('prompt', OAUTH_CLIENT.prompt);
   }
@@ -57,12 +58,22 @@ export function authorizationUrl() {
   return url;
 }
 
-export function logoutUrl() {
-  const state = guid();
+export function logoutUrl(state) {
+  let url = URI(BROKER.logoutEndpoint)
+      .addQuery('post_logout_redirect_uri', OAUTH_CLIENT.redirectUri);
+  if (state) {
+    url.addQuery('state', state);
+  }
+  return url;
+}
 
-  return URI(BROKER.logoutEndpoint)
-      .addQuery('post_logout_redirect_uri', OAUTH_CLIENT.redirectUri)
-      .addQuery('state', state);
+export function getJwks() {
+  return fetch(BROKER.jwksEndpoint, {
+    method: 'get',
+    header: {
+      'Accept': 'application/json'
+    }
+  });
 }
 
 export function getUserData(accessToken) {

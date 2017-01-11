@@ -1,12 +1,18 @@
 import React from 'react';
-import { authorizationUrl } from '../util/Helpers';
+import { guid, authorizationUrl } from '../util/Helpers';
+import Storage from '../util/Storage';
 import { Container, Message, Button } from 'semantic-ui-react';
 
 const Logout = ({props}) => {
   const redirect = (event) => {
     console.log("Authorizing and/or authenticating");
     event.preventDefault();
-    window.location = authorizationUrl().toString();
+    const state = guid();
+    const nonce = guid();
+    let storage = new Storage();
+    storage.setConfig('state', state);
+    storage.setConfig('nonce', nonce);
+    window.location = authorizationUrl(state, nonce).toString();
   };
 
   return (
