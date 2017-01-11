@@ -1,45 +1,47 @@
 import React from 'react';
 import ScimResource from '../util/Scim';
 import { SCHEMA } from '../Config';
-import { Container, Table } from 'semantic-ui-react';
+import { Container, Table, Icon } from 'semantic-ui-react';
 import './UserDetails.css';
 
 const UserDetails = props => {
-  const valueOrNull = (value) => {
+  const value = (attr) => {
     // Get the .value property of a complex attribute
-    if (value && 'value' in value) {
-      return value['value'];
+    if (attr && 'value' in attr) {
+      return attr['value'];
     }
     return null;
   };
-  const attributes = () => {
+
+  const findAttributes = () => {
     let attrs = {};
     attrs['id'] = props.user.getId();
     attrs['username'] = props.user.getValue(SCHEMA.username);
     attrs['name'] = props.user.getValue(SCHEMA.fullName);
-    attrs['email'] = valueOrNull(props.user.getValue(SCHEMA.email));
-    attrs['phone'] = valueOrNull(props.user.getValue(SCHEMA.phone));
+    attrs['email'] = value(props.user.getValue(SCHEMA.email));
+    attrs['phone'] = value(props.user.getValue(SCHEMA.phone));
     return attrs;
   };
-  let attrs = attributes();
+
+  let attrs = findAttributes();
   return (
       <Container className="UserDetails">
         <Table definition>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Username</Table.Cell>
+              <Table.Cell><Icon name="asterisk"/>Username</Table.Cell>
               <Table.Cell>{attrs.username}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Name</Table.Cell>
+              <Table.Cell><Icon name="user"/>Name</Table.Cell>
               <Table.Cell>{attrs.name}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Email address</Table.Cell>
+              <Table.Cell><Icon name="mail"/>Email address</Table.Cell>
               <Table.Cell>{attrs.email}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Phone number</Table.Cell>
+              <Table.Cell><Icon name="phone"/>Phone number</Table.Cell>
               <Table.Cell>{attrs.phone}</Table.Cell>
             </Table.Row>
           </Table.Body>
