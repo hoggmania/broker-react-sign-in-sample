@@ -9,7 +9,7 @@ import { Container } from 'semantic-ui-react';
 const Home = props => {
   return props.isLoading === true
       ? (
-          <Loading/>
+          <Loading message="Loading profile data"/>
       )
       : (
           <Container>
