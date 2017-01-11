@@ -26,23 +26,23 @@ const UserDetails = props => {
   let attrs = findAttributes();
   return (
       <Container className="UserDetails">
-        <Table definition>
+        <Table definition id="userDetails">
           <Table.Body>
             <Table.Row>
               <Table.Cell><Icon name="asterisk"/>Username</Table.Cell>
-              <Table.Cell>{attrs.username}</Table.Cell>
+              <Table.Cell id="userDetails-username">{attrs.username}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell><Icon name="user"/>Name</Table.Cell>
-              <Table.Cell>{attrs.name}</Table.Cell>
+              <Table.Cell id="userDetails-name">{attrs.name}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell><Icon name="mail"/>Email address</Table.Cell>
-              <Table.Cell>{attrs.email}</Table.Cell>
+              <Table.Cell id="userDetails-email">{attrs.email}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell><Icon name="phone"/>Phone number</Table.Cell>
-              <Table.Cell>{attrs.phone}</Table.Cell>
+              <Table.Cell id="userDetails-phone">{attrs.phone}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

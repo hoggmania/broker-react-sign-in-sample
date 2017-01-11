@@ -1,18 +1,24 @@
-const CONFIG_PREFIX = 'com.unboundid.example.';
-const STORAGE = window.sessionStorage;
+class Storage {
+  storage() {
+    return window.sessionStorage;
+  }
 
-function prefixedKey(key) {
-  return `${CONFIG_PREFIX}${key}`;
+  static _prefixedKey(key) {
+    const CONFIG_PREFIX = 'com.unboundid.example.';
+    return `${CONFIG_PREFIX}${key}`;
+  }
+
+  getConfig(key) {
+    return this.storage().getItem(Storage._prefixedKey(key));
+  }
+
+  setConfig(key, value) {
+    this.storage().setItem(Storage._prefixedKey(key), value);
+  }
+
+  deleteConfig(key) {
+    this.storage().removeItem(Storage._prefixedKey(key));
+  }
 }
 
-export function getConfig(key) {
-  return STORAGE.getItem(prefixedKey(key));
-}
-
-export function setConfig(key, value) {
-  STORAGE.setItem(prefixedKey(key), value);
-}
-
-export function deleteConfig(key) {
-  STORAGE.removeItem(prefixedKey(key));
-}
+export default Storage;

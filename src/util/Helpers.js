@@ -21,11 +21,11 @@ export function parseParamsFromUrl(url) {
   return params;
 }
 
-function parseParams(raw_params) {
+function parseParams(rawParams) {
   // See: https://developers.google.com/accounts/docs/OAuth2UserAgent
   let params = {};
   const rx = /([^&=]+)=([^&]*)/g;
-  const query_string = raw_params.substring(1);
+  const query_string = rawParams.substring(1);
   let match = rx.exec(query_string);
   while (match) {
     params[URI.decodeQuery(match[1])] = URI.decodeQuery(match[2]);
@@ -73,15 +73,4 @@ export function getUserData(accessToken) {
       'Accept': 'application/scim+json'
     }
   });
-}
-
-// Stubs an event object. Used by tests.
-export function event(name, value) {
-  return {
-    target: {
-      name: name,
-      value: value,
-    },
-    preventDefault: jest.fn()
-  };
 }

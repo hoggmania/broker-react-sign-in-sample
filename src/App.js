@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import HomeContainer from './containers/HomeContainer';
-import { getConfig } from './util/Storage';
-import { deleteConfig } from './util/Storage';
+import Storage from './util/Storage';
 import { APP_SETTINGS } from './Config';
 import { Container } from 'semantic-ui-react';
 import './App.css';
@@ -13,16 +12,17 @@ class App extends Component {
   }
 
   handleTokens() {
-    if (getConfig('accessToken')) {
-      this.accessToken = getConfig('accessToken');
+    let storage = new Storage();
+    if (storage.getConfig('accessToken')) {
+      this.accessToken = storage.getConfig('accessToken');
       if (!APP_SETTINGS.persistTokens) {
-        deleteConfig('accessToken');
+        storage.deleteConfig('accessToken');
       }
     }
-    if (getConfig('idToken')) {
-      this.idToken = getConfig('idToken');
+    if (storage.getConfig('idToken')) {
+      this.idToken = storage.getConfig('idToken');
       if (!APP_SETTINGS.persistTokens) {
-        deleteConfig('idToken');
+        storage.deleteConfig('idToken');
       }
     }
   }

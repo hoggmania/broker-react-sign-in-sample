@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { parseParamsFromUrl } from './util/Helpers';
-import { setConfig } from './util/Storage';
+import Storage from './util/Storage';
 import LayoutContainer from './containers/LayoutContainer';
 import Error from './components/Error';
 import ReactRedirect from 'react-redirect';
@@ -14,13 +14,14 @@ class OAuthCallback extends Component {
   }
 
   handleCallback(url) {
+    let storage = new Storage();
     let params = parseParamsFromUrl(url);
     if (params['access_token'] || params['id_token']) {
       if (params['access_token']) {
-        setConfig('accessToken', params['access_token']);
+        storage.setConfig('accessToken', params['access_token']);
       }
       if (params['id_token']) {
-        setConfig('idToken', params['id_token']);
+        storage.setConfig('idToken', params['id_token']);
       }
     }
     if (params['error']) {
