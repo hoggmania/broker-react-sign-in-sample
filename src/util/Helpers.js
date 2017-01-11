@@ -1,4 +1,5 @@
 import URI from 'urijs';
+import { OAUTH_CLIENT, BROKER } from '../Config';
 
 export function guid() {
   // See: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -27,14 +28,51 @@ function parseParams(raw_params) {
   const query_string = raw_params.substring(1);
   let match = rx.exec(query_string);
   while (match) {
-    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+    params[URI.decodeQuery(match[1])] = URI.decodeQuery(match[2]);
     match = rx.exec(query_string);
   }
   return params;
 }
 
-export function isEmptyObject(obj) {
-  return Object.keys(obj).length === 0 && obj.constructor === Object;
+export function authorizationUrl() {
+  const state = guid();
+  const nonce = guid();
+
+  let url = URI(BROKER.authorizeEndpoint)
+      .addQuery('client_id', OAUTH_CLIENT.clientId)
+      .addQuery('response_type', OAUTH_CLIENT.responseType)
+      .addQuery('scope', OAUTH_CLIENT.scope)
+      .addQuery('redirect_uri', OAUTH_CLIENT.redirectUri)
+      .addQuery('state', state)
+      .addQuery('nonce', nonce);
+  if (OAUTH_CLIENT.prompt) {
+    url.addQuery('prompt', OAUTH_CLIENT.prompt);
+  }
+  if (OAUTH_CLIENT.acrValues) {
+    url.addQuery('acr_values', OAUTH_CLIENT.acrValues);
+  }
+  if (OAUTH_CLIENT.maxAge) {
+    url.addQuery('max_age', OAUTH_CLIENT.maxAge);
+  }
+  return url;
+}
+
+export function logoutUrl() {
+  const state = guid();
+
+  return URI(BROKER.logoutEndpoint)
+      .addQuery('post_logout_redirect_uri', OAUTH_CLIENT.redirectUri)
+      .addQuery('state', state);
+}
+
+export function getUserData(accessToken) {
+  return fetch(BROKER.meEndpoint, {
+    method: 'get',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/scim+json'
+    }
+  });
 }
 
 // Stubs an event object. Used by tests.
