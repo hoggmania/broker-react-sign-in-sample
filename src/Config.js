@@ -2,9 +2,9 @@
 // authentication process.
 export const OAUTH_CLIENT = {
   // Unique ID for an OAuth2 Client configured with the Broker
-  clientId: 'broker-react-sign-in-sample',
+  clientId: 'react-sign-in-sample',
   // Space-delimited list of OAuth2 Scopes
-  scope: 'openid email profile phone',
+  scope: 'openid email name phone birthday',
   redirectUri: 'http://localhost:3000/callback.html',
   responseType: 'token id_token',
   prompt: '',
@@ -38,7 +38,7 @@ export const SCHEMA = {
   fullName: 'name.formatted',
   email: 'emails[primary eq true]',
   phone: 'phoneNumbers[primary eq true]',
-  test: 'test[primary eq true]'
+  birthday: 'urn:pingidentity:schemas:sample:profile:1.0:birthDate'
 };
 
 // General application settings.
