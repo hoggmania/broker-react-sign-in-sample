@@ -23,7 +23,8 @@ var stripAnsi = require('strip-ansi');
 var useYarn = pathExists.sync(paths.yarnLockFile);
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs,
+      paths.callbackHtml, paths.callbackJs])) {
   process.exit(1);
 }
 
@@ -219,6 +220,6 @@ function build(previousSizeMap) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml
+    filter: file => file !== paths.appHtml || file !== paths.callbackHtml
   });
 }
