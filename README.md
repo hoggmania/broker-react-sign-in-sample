@@ -86,18 +86,105 @@ yarn start
 This will automatically open the application in a browser window. 
 By default, it runs from a local HTTP server at `http://localhost:3000`.
 
-## Notes
+## Building
 
-* By default, the application listens on an unsecured HTTP port. Please be
-aware that a production web application should always be served using HTTPS.
+To create an optimized production build:
+
+```
+yarn build
+```
+
+Look for output in the `build` directory.
+
+## About this sample
+
+OAuth 2 and OpenID Connect rely on browser redirects to pass 
+authorization and authentication tokens between the auth server and the 
+client application. This application handles that interaction by 
+receiving redirects from the auth server at the `callback.html` 
+endpoint, which processes data received from the auth server, then 
+redirects to the main application's `index.html` endpoint. Data is 
+shared between the two endpoints using the browser's 
+[web storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).
+
+A client-side application such as this has three options for 
+interacting with an auth server such as the Data Governance Broker, 
+determined by the `response_type` parameter set by the application when 
+making its auth request. These options are:
+
+* `token id_token`: The client requests both an **access token** (an 
+authorization credential for data access) and an **ID token** (a data 
+structure containing information about the user's authentication state).
+* `token`: The client requests an access token only.
+* `id_token`: The client requests an ID token only.
+
+The response type used by the application determines _how_ it will 
+obtain user profile data. 
+
+* If the application receives an access token (by using a 
+`response_type` of `token id_token` or `token`), then the access token 
+can be used to make separate user data requests to either the 
+[UserInfo endpoint](https://developer.unboundid.com/6.0.0.1/broker/api/oauth2/userinfo/) 
+or the [SCIM service](https://developer.unboundid.com/6.0.0.1/broker/api/scim/).
+* If the application receives an ID token only (by using a 
+`response_type` of `id_token`), then the application will not be able 
+to make UserInfo or SCIM requests. However, the ID token received from 
+the Broker will include additional 'claims' containing user profile 
+data. See [here](https://developer.unboundid.com/6.0.0.1/broker/api/oauth2/id-tokens/) 
+for more information. 
+
+You can change the response type used by the application by modifying 
+this block in `src/Config.js`:
+
+```javascript
+export const OAUTH_CLIENT = {
+  // Unique ID for an OAuth2 Client configured with the Broker
+  clientId: 'react-sign-in-sample',
+  // Space-delimited list of OAuth2 Scopes
+  scope: 'openid email name phone birthday',
+  redirectUri: 'http://localhost:3000/callback.html',
+  // Valid responseType values are 'token id_token', 'token', and 'id_token'
+  responseType: 'token id_token',
+  prompt: '',
+  acrValues: '',
+  maxAge: ''
+};
+```
+
+Note that the scopes requested by the application — also configured in 
+the block above — determine _which_ user profile data are available to 
+the application. 
+
+For more information about OAuth 2 and OpenID Connect, see the 
+[Data Governance Broker Client Developer Guide](https://developer.unboundid.com/6.0.0.1/broker/guides/broker-client-developer-guide/).
+
+## About the config and scripts directories
+
+The build, development server, and unit test scripts are stored in the 
+`scripts` directory. Build and test configuration, including 
+[Webpack](https://webpack.github.io/) configuration, are stored in the 
+`config` directory.
+
+This project was initially created with [create-react-app](https://github.com/facebookincubator/create-react-app) (and react-scripts version 
+0.8.5), then ejected so that modifications could be made to the Webpack 
+configuration. You may wish to monitor the create-react-app project for 
+improvements to the build configuration.
+
+## Other notes
+
+* In development mode, the application listens on an unsecured HTTP 
+port. Please be aware that a production web application should always 
+be served using HTTPS.
 * The application does not support encrypted ID tokens.
-* You can use npm if you don't want to use Yarn.
+* You can use npm if you don't want to use Yarn, though Yarn is 
+recommended.
 
 ## Support and reporting bugs
 
 This sample is not officially supported, but support will be provided
-on a best-effort basis through GitHub. Please be aware that this sample is
-provided for demonstration purposes and is not intended to be production-ready.
+on a best-effort basis through GitHub. Please be aware that this sample 
+is provided for demonstration purposes and is not necessarily intended 
+to be production-ready.
 
 Please report issues using the project's
 [issue tracker](https://github.com/UnboundID/broker-react-sign-in-sample/issues).
