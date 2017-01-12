@@ -10,12 +10,14 @@ const Logout = ({props}) => {
     const state = guid();
     let storage = new Storage();
     storage.setConfig('state', state);
+    storage.deleteConfig('claims');
     window.location = logoutUrl(state).toString();
   };
 
   return (
       <Container>
         <Button
+            negative
             icon="sign out"
             labelPosition="left"
             content="Sign out"

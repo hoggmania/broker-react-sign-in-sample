@@ -18,7 +18,8 @@ class OAuthCallback extends Component {
       loadingMessage: 'Loading'
     };
     this.checkState = this.checkState.bind(this);
-    this.verifyIdToken = this.verifyIdToken.bind(this);
+    this.handleIdToken = this.handleIdToken.bind(this);
+    this.storeClaims = this.storeClaims.bind(this);
     this.clearStorage = this.clearStorage.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
   }
@@ -40,7 +41,7 @@ class OAuthCallback extends Component {
     }
   }
 
-  verifyIdToken(idToken, expectedNonce) {
+  handleIdToken(idToken, expectedNonce) {
     console.log('Validating ID token', idToken);
     this.setState({
       loadingMessage: 'Validating ID token'
@@ -62,8 +63,9 @@ class OAuthCallback extends Component {
       };
 
       try {
-        JwsVerifier.verify(idToken, jwk, expectedClaims);
+        const claims = JwsVerifier.verify(idToken, jwk, expectedClaims);
         console.log('Validated ID token');
+        this.storeClaims(claims);
         this.setState({
           ready: true
         });
@@ -75,6 +77,11 @@ class OAuthCallback extends Component {
         this.clearStorage();
       }
     });
+  }
+
+  storeClaims(claims) {
+    let storage = new Storage();
+    storage.setConfig('claims', JSON.stringify(claims));
   }
 
   clearStorage() {
@@ -96,7 +103,7 @@ class OAuthCallback extends Component {
       }
       if (params['id_token']) {
         storage.setConfig('idToken', params['id_token']);
-        this.verifyIdToken(params['id_token'], storage.getConfig('nonce'));
+        this.handleIdToken(params['id_token'], storage.getConfig('nonce'));
       }
     } else {
       if (params['error']) {

@@ -5,6 +5,7 @@ import Login from '../components/Login';
 import Home from '../components/Home';
 import Error from '../components/Error';
 import ScimResource from '../util/Scim';
+import Storage from '../util/Storage';
 import { getUserData } from '../util/Helpers';
 
 class MainContainer extends Component {
@@ -46,6 +47,13 @@ class MainContainer extends Component {
     console.log('state: ', this.props.state);
     console.log('nonce: ', this.props.nonce);
 
+    let storage = new Storage();
+    if (storage.getConfig('claims')) {
+      this.setState({
+        claims: JSON.parse(storage.getConfig('claims'))
+      });
+    }
+
     if (this.props.accessToken) {
       this.fetchProfile();
     } else {
@@ -75,6 +83,7 @@ class MainContainer extends Component {
               <Home
                   isLoading={this.state.isLoading}
                   user={this.state.user}
+                  claims={this.state.claims}
               />
             </LayoutContainer>
         )

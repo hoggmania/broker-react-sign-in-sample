@@ -58,6 +58,7 @@ class JwsVerifier {
     if (!KJUR.jws.JWS.verifyJWT(jwt, JwsVerifier._jwkToPublicKey(jwk), claims)) {
       throw new Error("ID token validation failed");
     }
+    return parsedJwt.payloadObj;
   }
 }
 
