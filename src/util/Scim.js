@@ -56,6 +56,9 @@ class ScimResource {
       throw new Error(`The '${operator}' operator is unsupported`);
     }
     let complexValue = objectPath.get(obj, attributePath);
+    if (!complexValue) {
+      return undefined;
+    }
     return complexValue.find(attr => {
       if (typeof(attr[filterAttribute]) === "boolean") {
         return attr[filterAttribute].toString() === filterValue;

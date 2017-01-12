@@ -131,4 +131,14 @@ describe('The SCIM parser', () => {
     let user = new ScimResource(JSON.parse(testJson));
     expect(user.getValue('urn:pingidentity:schemas:sample:profile:1.0:birthDate')).toEqual('1949-02-23');
   });
+
+  it('returns undefined for a nonexistent attribute', () => {
+    let user = new ScimResource(JSON.parse(testJson));
+    expect(user.getValue('nonexistent')).toBeUndefined();
+  });
+
+  it('returns undefined for a nonexistent attribute with a value filter', () => {
+    let user = new ScimResource(JSON.parse(testJson));
+    expect(user.getValue('nonexistent[type eq "home"]')).toBeUndefined();
+  });
 });
