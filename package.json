@@ -54,7 +54,6 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redirect": "^1.0.0",
-    "semantic-ui-css": "^2.2.4",
     "semantic-ui-react": "^0.63.5",
     "urijs": "^1.18.4"
   },
