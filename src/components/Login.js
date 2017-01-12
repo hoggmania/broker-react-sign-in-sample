@@ -3,7 +3,7 @@ import { guid, authorizationUrl } from '../util/Helpers';
 import Storage from '../util/Storage';
 import { Container, Message, Button } from 'semantic-ui-react';
 
-const Logout = ({props}) => {
+const Login = ({props}) => {
   const redirect = (event) => {
     console.log("Authorizing and/or authenticating");
     event.preventDefault();
@@ -33,4 +33,4 @@ const Logout = ({props}) => {
   );
 };
 
-export default Logout;
+export default Login;
