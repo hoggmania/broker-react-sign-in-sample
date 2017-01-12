@@ -26,18 +26,11 @@ class OAuthCallback extends Component {
 
   checkState(expectedState, actualState) {
     console.log('Confirming state received from auth server matches');
-    if (expectedState === null || actualState === null) {
-      console.warn('No state value');
+    if (expectedState !== actualState) {
+      console.warn('State mismatch');
       this.setState({
-        error: 'No state value to check.'
+        error: 'Expected state value not received from auth server.'
       });
-    } else {
-      if (expectedState !== actualState) {
-        console.warn('State mismatch');
-        this.setState({
-          error: 'Expected state value not received from auth server.'
-        });
-      }
     }
   }
 
@@ -95,7 +88,9 @@ class OAuthCallback extends Component {
     let storage = new Storage();
     let params = parseParamsFromUrl(url);
 
-    this.checkState(storage.getConfig('state'), params['state']);
+    if (params['state']) {
+      this.checkState(storage.getConfig('state'), params['state']);
+    }
 
     if (params['access_token'] || params['id_token']) {
       if (params['access_token']) {
