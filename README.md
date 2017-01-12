@@ -18,7 +18,7 @@ OpenID Connect. It shows how an application may:
 
 ## Prerequisites
 
-[NodeJS](https://docs.npmjs.com/getting-started/installing-node) and  
+[NodeJS](https://docs.npmjs.com/getting-started/installing-node) and 
 [Yarn](https://yarnpkg.com/en/docs/install) 
 must be installed. 
 
