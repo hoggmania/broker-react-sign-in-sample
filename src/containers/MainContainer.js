@@ -5,8 +5,7 @@ import Login from '../components/Login';
 import Home from '../components/Home';
 import Error from '../components/Error';
 import ScimResource from '../util/Scim';
-import Storage from '../util/Storage';
-import { getUserData } from '../util/Helpers';
+import { getUserData, getClaims } from '../util/Helpers';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -14,10 +13,11 @@ class MainContainer extends Component {
     this.state = {
       loadingMessage: 'Loading'
     };
-    this.fetchProfile = this.fetchProfile.bind(this);
+    this.handleAccessToken = this.handleAccessToken.bind(this);
+    this.handleClaims = this.handleClaims.bind(this);
   }
 
-  fetchProfile() {
+  handleAccessToken() {
     console.log("Fetching user resource");
     this.setState({
       loadingMesage: 'Retrieving user profile'
@@ -31,9 +31,11 @@ class MainContainer extends Component {
           });
         })
         .then(response => {
+          console.log("User resource retrieved");
           return response.json();
         })
         .then(json => {
+          console.log("User resource fetch complete");
           this.setState({
             loadingMessage: null,
             user: new ScimResource(json)
@@ -41,23 +43,25 @@ class MainContainer extends Component {
         });
   }
 
+  handleClaims() {
+    this.setState({
+      loadingMessage: null,
+      claims: getClaims()
+    });
+  }
+
   componentDidMount() {
     console.log('accessToken: ', this.props.accessToken);
-    console.log('idToken: ', this.props.idToken);
-    console.log('state: ', this.props.state);
-    console.log('nonce: ', this.props.nonce);
-
-    let storage = new Storage();
-    if (storage.getConfig('claims')) {
-      this.setState({
-        claims: JSON.parse(storage.getConfig('claims'))
-      });
-    }
+    console.log('claims: ', getClaims());
 
     if (this.props.accessToken) {
-      this.fetchProfile();
-    } else {
-      console.log("No access token found");
+      this.handleAccessToken();
+    }
+    if (getClaims()) {
+      this.handleClaims();
+    }
+    if (!this.props.accessToken && !getClaims()) {
+      console.log("No access token or OIDC claims found");
       this.setState({
         loadingMessage: null
       });
@@ -77,7 +81,7 @@ class MainContainer extends Component {
           <Loading message={this.state.loadingMessage}/>
       );
     }
-    return this.props.accessToken
+    return this.props.accessToken || getClaims()
         ? (
             <LayoutContainer>
               <Home
@@ -98,10 +102,7 @@ class MainContainer extends Component {
 }
 
 MainContainer.propTypes = {
-  state: React.PropTypes.string,
-  nonce: React.PropTypes.string,
-  accessToken: React.PropTypes.string,
-  idToken: React.PropTypes.string
+  accessToken: React.PropTypes.string
 };
 
 export default MainContainer;

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import ScimResource from '../util/Scim';
 import { Container, Message } from 'semantic-ui-react';
-import { SCHEMA } from '../Config';
+import ScimResource from '../util/Scim';
+import { getClaims } from '../util/Helpers';
+import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 
 class SignedInMessage extends Component {
   constructor(props) {
@@ -20,25 +21,30 @@ class SignedInMessage extends Component {
 
   render() {
     if (this.state.visible) {
-      const username = this.props.user.getValue(SCHEMA.username);
+      let username = null;
+      if (this.props.user) {
+        username = this.props.user.getValue(SCIM_SCHEMA.username);
+      } else if (getClaims()) {
+        username = getClaims()[OIDC_SCHEMA.username];
+      }
       const message = `You are now signed in as ${username}.`;
-      return (
-          <Container>
-            <Message
-                info
-                icon="circle info"
-                content={message}
-                onDismiss={this.handleDismiss}
-            />
-          </Container>
-      )
+      return username != null ? (
+              <Container>
+                <Message
+                    info
+                    icon="circle info"
+                    content={message}
+                    onDismiss={this.handleDismiss}
+                />
+              </Container>
+          ) : null;
     }
     return null;
   }
 }
 
 SignedInMessage.propTypes = {
-  user: React.PropTypes.instanceOf(ScimResource).isRequired
+  user: React.PropTypes.instanceOf(ScimResource)
 };
 
 export default SignedInMessage;

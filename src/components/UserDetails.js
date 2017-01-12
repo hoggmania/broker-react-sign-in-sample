@@ -1,6 +1,7 @@
 import React from 'react';
 import ScimResource from '../util/Scim';
-import { SCHEMA } from '../Config';
+import { getClaims } from '../util/Helpers';
+import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 import { Container, Table, Icon } from 'semantic-ui-react';
 import './UserDetails.css';
 
@@ -15,12 +16,22 @@ const UserDetails = props => {
 
   const findAttributes = () => {
     let attrs = {};
-    attrs['id'] = props.user.getId();
-    attrs['username'] = props.user.getValue(SCHEMA.username);
-    attrs['name'] = props.user.getValue(SCHEMA.fullName);
-    attrs['email'] = value(props.user.getValue(SCHEMA.email));
-    attrs['phone'] = value(props.user.getValue(SCHEMA.phone));
-    attrs['birthday'] = props.user.getValue(SCHEMA.birthday);
+    if (props.user) {
+      attrs['id'] = props.user.getId();
+      attrs['username'] = props.user.getValue(SCIM_SCHEMA.username);
+      attrs['name'] = props.user.getValue(SCIM_SCHEMA.fullName);
+      attrs['email'] = value(props.user.getValue(SCIM_SCHEMA.email));
+      attrs['phone'] = value(props.user.getValue(SCIM_SCHEMA.phone));
+      attrs['birthday'] = props.user.getValue(SCIM_SCHEMA.birthday);
+    } else if (getClaims()) {
+      const claims = getClaims();
+      attrs['id'] = claims['sub'];
+      attrs['username'] = claims[OIDC_SCHEMA.username];
+      attrs['name'] = claims[OIDC_SCHEMA.fullName];
+      attrs['email'] = claims[OIDC_SCHEMA.email];
+      attrs['phone'] = claims[OIDC_SCHEMA.phone];
+      attrs['birthday'] = claims[OIDC_SCHEMA.birthday];
+    }
     return attrs;
   };
 
@@ -29,18 +40,27 @@ const UserDetails = props => {
       <Container className="UserDetails">
         <Table definition id="userDetails">
           <Table.Body>
-            <Table.Row>
-              <Table.Cell><Icon name="asterisk"/>Username</Table.Cell>
-              <Table.Cell id="userDetails-username">{attrs.username}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell><Icon name="user"/>Name</Table.Cell>
-              <Table.Cell id="userDetails-name">{attrs.name}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell><Icon name="mail"/>Email address</Table.Cell>
-              <Table.Cell id="userDetails-email">{attrs.email}</Table.Cell>
-            </Table.Row>
+            {
+              attrs['username'] &&
+              <Table.Row>
+                <Table.Cell><Icon name="asterisk"/>Username</Table.Cell>
+                <Table.Cell id="userDetails-username">{attrs.username}</Table.Cell>
+              </Table.Row>
+            }
+            {
+              attrs['name'] &&
+              <Table.Row>
+                <Table.Cell><Icon name="user"/>Name</Table.Cell>
+                <Table.Cell id="userDetails-name">{attrs.name}</Table.Cell>
+              </Table.Row>
+            }
+            {
+              attrs['email'] &&
+              <Table.Row>
+                <Table.Cell><Icon name="mail"/>Email address</Table.Cell>
+                <Table.Cell id="userDetails-email">{attrs.email}</Table.Cell>
+              </Table.Row>
+            }
             {
               attrs['phone'] &&
               <Table.Row>

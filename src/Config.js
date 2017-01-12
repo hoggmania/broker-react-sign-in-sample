@@ -12,6 +12,7 @@ export const OAUTH_CLIENT = {
   maxAge: ''
 };
 
+// Settings used when verifying an OpenID Connect ID token.
 export const OIDC = {
   // The auth server's issuer ID.
   issuer: 'https://example.com',
@@ -33,7 +34,7 @@ export const BROKER = {
 };
 
 // SCIM attribute paths. Change these if you're using a custom schema.
-export const SCHEMA = {
+export const SCIM_SCHEMA = {
   username: 'userName',
   fullName: 'name.formatted',
   email: 'emails[primary eq true]',
@@ -41,13 +42,17 @@ export const SCHEMA = {
   birthday: 'urn:pingidentity:schemas:sample:profile:1.0:birthDate'
 };
 
+// OpenID Connect claim names. Change these if you're using a
+// custom schema.
+export const OIDC_SCHEMA = {
+  username: 'preferred_username',
+  fullName: 'name',
+  email: 'email',
+  phone: 'phone_number',
+  birthday: 'birthdate'
+};
+
 // General application settings.
 export const APP_SETTINGS = {
-  rootUri: 'http://localhost:3000/',
-  // If false, access and ID tokens are persisted to browser storage
-  // only long enough to redirect from the callback endpoint to the
-  // main app. If true, they are persisted for the duration of the
-  // application session. Set to true if you want to be able to reload
-  // the application without making another OAuth 2 request.
-  persistTokens: false
+  rootUri: 'http://localhost:3000/'
 };

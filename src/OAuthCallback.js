@@ -18,6 +18,7 @@ class OAuthCallback extends Component {
       loadingMessage: 'Loading'
     };
     this.checkState = this.checkState.bind(this);
+    this.handleAccessToken = this.handleAccessToken.bind(this);
     this.handleIdToken = this.handleIdToken.bind(this);
     this.storeClaims = this.storeClaims.bind(this);
     this.clearStorage = this.clearStorage.bind(this);
@@ -30,6 +31,17 @@ class OAuthCallback extends Component {
       console.warn('State mismatch');
       this.setState({
         error: 'Expected state value not received from auth server.'
+      });
+    }
+  }
+
+  handleAccessToken(accessToken, idToken) {
+    console.log('Storing access token', idToken);
+    let storage = new Storage();
+    storage.setConfig('accessToken', accessToken);
+    if (!idToken) {
+      this.setState({
+        ready: true
       });
     }
   }
@@ -67,7 +79,7 @@ class OAuthCallback extends Component {
         this.setState({
           error: 'ID token validation failed.'
         });
-        this.clearStorage();
+        this.clearStorage(['state', 'nonce']);
       }
     });
   }
@@ -77,16 +89,16 @@ class OAuthCallback extends Component {
     storage.setConfig('claims', JSON.stringify(claims));
   }
 
-  clearStorage() {
+  clearStorage(keys) {
     let storage = new Storage();
-    [ 'accessToken', 'idToken', 'state', 'nonce' ].forEach((key) => {
+    keys.forEach((key) => {
       storage.deleteConfig(key);
     });
   }
 
   handleCallback(url) {
-    let storage = new Storage();
     let params = parseParamsFromUrl(url);
+    let storage = new Storage();
 
     if (params['state']) {
       this.checkState(storage.getConfig('state'), params['state']);
@@ -94,10 +106,9 @@ class OAuthCallback extends Component {
 
     if (params['access_token'] || params['id_token']) {
       if (params['access_token']) {
-        storage.setConfig('accessToken', params['access_token']);
+        this.handleAccessToken(params['access_token'], params['id_token']);
       }
       if (params['id_token']) {
-        storage.setConfig('idToken', params['id_token']);
         this.handleIdToken(params['id_token'], storage.getConfig('nonce'));
       }
     } else {
@@ -113,6 +124,7 @@ class OAuthCallback extends Component {
         });
       }
 
+      // If we make it this far, then this must be a logout response.
       this.setState({
         ready: true
       });

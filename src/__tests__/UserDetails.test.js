@@ -3,6 +3,8 @@ import { shallow } from 'enzyme';
 import ScimResource from '../util/Scim';
 import UserDetails from '../components/UserDetails';
 
+jest.mock('../util/Storage');
+
 const testJson = `
 {
     "id": "2f05b231-8c9d-481d-8b6f-ceefac6852eb",
