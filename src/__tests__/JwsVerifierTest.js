@@ -16,8 +16,50 @@ const gracePeriod = Math.floor(new Date() / 1000);
 describe('The JWS verifier', () => {
   it('can verify a valid JWS', () => {
     expect(() => {
-      JwsVerifier.verify(rsaJws, jwk, { alg: [ 'RS256' ], gracePeriod: gracePeriod});
+      JwsVerifier.verify(rsaJws, jwk, { alg: [ 'RS256' ], gracePeriod: gracePeriod });
     }).not.toThrow();
+    expect(() => {
+      JwsVerifier.verify(rsaJws, jwk, {
+        alg: [ 'RS256' ],
+        iss: 'https://vm-small-34.unboundid.lab',
+        aud: 'broker-react-sign-in-sample',
+        nonce: '3f28cbde-224e-446c-9ada-b8321ea09c05',
+        gracePeriod: gracePeriod
+      });
+    }).not.toThrow();
+  });
+
+  it('rejects a JWS with a mismatched nonce', () => {
+    expect(() => {
+      JwsVerifier.verify(rsaJws, jwk, {
+        alg: [ 'RS256' ],
+        iss: 'https://vm-small-34.unboundid.lab',
+        aud: 'broker-react-sign-in-sample',
+        nonce: 'WRONG',
+        gracePeriod: gracePeriod
+      });
+    }).toThrow();
+  });
+
+  it('rejects a JWS with a mismatched aud claim', () => {
+    expect(() => {
+      JwsVerifier.verify(rsaJws, jwk, {
+        alg: [ 'RS256' ],
+        iss: 'https://vm-small-34.unboundid.lab',
+        aud: 'WRONG',
+        gracePeriod: gracePeriod
+      });
+    }).toThrow();
+  });
+
+  it('rejects a JWS with a mismatched iss claim', () => {
+    expect(() => {
+      JwsVerifier.verify(rsaJws, jwk, {
+        alg: [ 'RS256' ],
+        iss: 'https://wrong.com',
+        gracePeriod: gracePeriod
+      });
+    }).toThrow();
   });
 
   it('rejects an HMAC-signed JWS', () => {

@@ -26,13 +26,35 @@ class JwsVerifier {
     Object.assign(claims, expectedClaims);
 
     if (claims.alg) {
-      claims.alg.map((alg) => {
+      claims.alg.forEach((alg) => {
         if (!alg.toLowerCase().startsWith('rs')) {
           throw new Error('Only RSA-based JWAs are supported');
         }
-        return null;
       })
     }
+    // The jsrsasign library will check some claims for us, but we'll
+    // have better error messaging if we check some manually.
+    let parsedJwt = KJUR.jws.JWS.parse(jwt);
+    if (claims.nonce) {
+      if (parsedJwt.payloadObj.nonce !== claims.nonce) {
+        throw new Error("nonce claim does not match");
+      }
+      delete claims.nonce;
+    }
+    if (claims.iss) {
+      if (parsedJwt.payloadObj.iss !== claims.iss) {
+        throw new Error("iss claim does not match");
+      }
+      delete claims.iss;
+    }
+    if (claims.aud) {
+      if (parsedJwt.payloadObj.aud !== claims.aud) {
+        throw new Error("aud claim does not match");
+      }
+      delete claims.aud;
+    }
+    // Verify signature. The jsrsasign library will also check the
+    // following claims: alg, jti, nbf, iat, exp
     if (!KJUR.jws.JWS.verifyJWT(jwt, JwsVerifier._jwkToPublicKey(jwk), claims)) {
       throw new Error("ID token validation failed");
     }

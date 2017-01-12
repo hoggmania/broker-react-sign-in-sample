@@ -18,7 +18,7 @@ export const OIDC = {
   // The JWT signing algorithm.
   jwa: 'RS256',
   // The JWK that contains the JWT's public signing key.
-  jwkId: 'rsa-idtoken',
+  jwkId: 'sample-idtoken-key',
   // A grace period in seconds for verifying time-based claims
   // (e.g., 'iat', 'exp').
   gracePeriod: 15

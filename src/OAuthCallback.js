@@ -19,24 +19,33 @@ class OAuthCallback extends Component {
     };
     this.checkState = this.checkState.bind(this);
     this.verifyIdToken = this.verifyIdToken.bind(this);
+    this.clearStorage = this.clearStorage.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
   }
 
   checkState(expectedState, actualState) {
     console.log('Confirming state received from auth server matches');
-    if (expectedState !== actualState) {
-      console.warn('State mismatch');
+    if (expectedState === null || actualState === null) {
+      console.warn('No state value');
       this.setState({
-        error: 'Expected state value not received from auth server.'
+        error: 'No state value to check.'
       });
+    } else {
+      if (expectedState !== actualState) {
+        console.warn('State mismatch');
+        this.setState({
+          error: 'Expected state value not received from auth server.'
+        });
+      }
     }
   }
 
-  verifyIdToken(idToken) {
-    console.log('Validating ID token');
+  verifyIdToken(idToken, expectedNonce) {
+    console.log('Validating ID token', idToken);
     this.setState({
       loadingMessage: 'Validating ID token'
     });
+    console.log('Retrieving JWKS');
     getJwks().then(response => {
       return response.json();
     }).then(jwks => {
@@ -46,8 +55,9 @@ class OAuthCallback extends Component {
 
       const expectedClaims = {
         alg: [ OIDC.jwa ],
-        iss: [ OIDC.issuer ],
-        aud: [ OAUTH_CLIENT.clientId ],
+        iss: OIDC.issuer,
+        aud: OAUTH_CLIENT.clientId,
+        nonce: expectedNonce,
         gracePeriod: OIDC.gracePeriod
       };
 
@@ -62,7 +72,15 @@ class OAuthCallback extends Component {
         this.setState({
           error: 'ID token validation failed.'
         });
+        this.clearStorage();
       }
+    });
+  }
+
+  clearStorage() {
+    let storage = new Storage();
+    [ 'accessToken', 'idToken', 'state', 'nonce' ].forEach((key) => {
+      storage.deleteConfig(key);
     });
   }
 
@@ -78,7 +96,7 @@ class OAuthCallback extends Component {
       }
       if (params['id_token']) {
         storage.setConfig('idToken', params['id_token']);
-        this.verifyIdToken(params['id_token']);
+        this.verifyIdToken(params['id_token'], storage.getConfig('nonce'));
       }
     } else {
       if (params['error']) {
