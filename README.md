@@ -42,14 +42,30 @@ cd broker-react-sign-in-sample
 yarn
 ```
 
-Install configuration needed by the application at the Broker:
+Update the Broker's configuration to register the application:
 
 ```
 dsconfig --no-prompt --batch-file setup.dsconfig
 ```
 
-Edit the `src/Config.js` file, substituting the service URLs of your
-Broker installation:
+Edit the `src/Config.js` file. You'll need to set the `issuer` setting 
+to match the issuer URL of the Broker's authentication service:
+
+```javascript
+export const OIDC = {
+  // The auth server's issuer ID.
+  issuer: 'https://example.com',
+  // The JWT signing algorithm.
+  jwa: 'RS256',
+  // The JWK that contains the JWT's public signing key.
+  jwkId: 'sample-idtoken-key',
+  // A grace period in seconds for verifying time-based claims
+  // (e.g., 'iat', 'exp').
+  gracePeriod: 15
+};
+```
+
+And you'll need to set the service URLs for yourBroker installation:
 
 ```javascript
 // Data Governance Broker service URLs.
@@ -61,7 +77,7 @@ export const BROKER = {
 };
 ```
 
-Start the broker-react-sign-in-sample:
+Finally, start the broker-react-sign-in-sample:
 
 ```
 yarn start
