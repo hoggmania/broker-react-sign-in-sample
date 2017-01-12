@@ -8,13 +8,14 @@ Connect. It shows how an application may:
 * Handle an OAuth 2/OpenID Connect redirect response
 * Verify a JWT ID token signature
 * Validate ID token claims
-* Perform logout and revoke access tokens
+* Perform logout and revoke access token
 * Read JSON Web Keys from a JWKS endpoint
 * Make simple SCIM resource requests for user profile data
 
 ## Prerequisites
 
-[NodeJS and npm](https://docs.npmjs.com/getting-started/installing-node) 
+[NodeJS](https://docs.npmjs.com/getting-started/installing-node) and  
+[Yarn](https://yarnpkg.com/en/docs/install) 
 must be installed. This application was tested with Node 6.9.x.
 
 The Data Governance Broker must be version 6.0.0.0 and above, and the 
@@ -34,7 +35,7 @@ Install the application's dependencies:
 
 ```
 cd broker-react-sign-in-sample
-npm install
+yarn
 ```
 
 Install configuration needed by the application at the Broker:
@@ -59,7 +60,7 @@ export const BROKER = {
 Start the broker-react-sign-in-sample:
 
 ```
-npm run start
+yarn start
 ```
 
 This will automatically open the application in a browser window. 
@@ -70,8 +71,7 @@ By default, it runs from a local HTTP server at `http://localhost:3000`.
 * By default, the application listens on an unsecured HTTP port. Please be
 aware that a production web application should always be served using HTTPS.
 * The application does not support encrypted ID tokens.
-* If you have [Yarn](https://yarnpkg.com/) installed, you can use it in 
-place of npm.
+* You can use npm if you don't want to use Yarn.
 
 ## Support and reporting bugs
 
