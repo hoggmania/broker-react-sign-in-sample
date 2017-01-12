@@ -1,22 +1,26 @@
 # broker-react-sign-in-sample [![Build Status](https://travis-ci.org/UnboundID/broker-react-sign-in-sample.svg?branch=master)](https://travis-ci.org/UnboundID/broker-react-sign-in-sample)
 
-This sample demonstrates how a client-side web application can use the Data
-Governance Broker as an authentication and authorization server using OpenID
-Connect. It shows how an application may:
+![React Sign In Sample animation](https://cloud.githubusercontent.com/assets/50972/21905894/af6b073a-d8ce-11e6-9a4a-a8eb520f9ecb.gif)
+
+This sample demonstrates how a client-side web application written with 
+[React](https://facebook.github.io/react/) can use the Data Governance 
+Broker as an authentication and authorization server using OAuth 2 and 
+OpenID Connect. It shows how an application may:
 
 * Make an OAuth 2/OpenID Connect request
 * Handle an OAuth 2/OpenID Connect redirect response
 * Verify a JWT ID token signature
 * Validate ID token claims
-* Perform logout and revoke access token
+* Perform logout to revoke an access token
 * Read JSON Web Keys from a JWKS endpoint
-* Make simple SCIM resource requests for user profile data
+* Retrieve user profile data from a SCIM endpoint
+* Retrieve user profile data from ID token claims
 
 ## Prerequisites
 
 [NodeJS](https://docs.npmjs.com/getting-started/installing-node) and  
 [Yarn](https://yarnpkg.com/en/docs/install) 
-must be installed. This application was tested with Node 6.9.x.
+must be installed. 
 
 The Data Governance Broker must be version 6.0.0.0 and above, and the 
 "user and reference app" [starter schema](https://developer.unboundid.com/6.0.0.1/broker/guides/broker-client-developer-guide/basics/schema/#The-starter-schema)
