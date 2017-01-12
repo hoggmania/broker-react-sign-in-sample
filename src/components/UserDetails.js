@@ -41,10 +41,13 @@ const UserDetails = props => {
               <Table.Cell><Icon name="mail"/>Email address</Table.Cell>
               <Table.Cell id="userDetails-email">{attrs.email}</Table.Cell>
             </Table.Row>
-            <Table.Row>
-              <Table.Cell><Icon name="phone"/>Phone number</Table.Cell>
-              <Table.Cell id="userDetails-phone">{attrs.phone}</Table.Cell>
-            </Table.Row>
+            {
+              attrs['phone'] &&
+              <Table.Row>
+                <Table.Cell><Icon name="phone"/>Phone number</Table.Cell>
+                <Table.Cell id="userDetails-phone">{attrs.phone}</Table.Cell>
+              </Table.Row>
+            }
             {
               attrs['birthday'] &&
               <Table.Row>
