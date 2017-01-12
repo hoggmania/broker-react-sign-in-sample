@@ -3,6 +3,13 @@ import { guid, logoutUrl } from '../util/Helpers';
 import Storage from '../util/Storage';
 import { Container, Button } from 'semantic-ui-react';
 
+/**
+ * This is the login button component. Clicking it will execute an
+ * OpenID Connect logout request, which revokes the user's access token
+ * and ends the current Broker session. The state value used in the
+ * logout request is persisted to session storage so that the OAuth 2
+ * callback endpoint can use it when checking the redirect response.
+ */
 const Logout = ({props}) => {
   const redirect = (event) => {
     console.log("Logging out");
@@ -10,8 +17,6 @@ const Logout = ({props}) => {
     const state = guid();
     let storage = new Storage();
     storage.setConfig('state', state);
-    storage.deleteConfig('accessToken');
-    storage.deleteConfig('claims');
     window.location = logoutUrl(state).toString();
   };
 

@@ -10,6 +10,18 @@ import Loading from './components/Loading';
 import Error from './components/Error';
 import './App.css';
 
+/**
+ * This class is responsible for handling OAuth 2/OpenID Connect
+ * redirect responses, which are either:
+ * 1) Token responses, including either an access token, an ID token,
+ * or both; or
+ * 2) Logout responses
+ *
+ * For token responses, the ID token is verified if present, and its
+ * claims are saved to session storage; the access token is also saved
+ * to session storage, if present. The browser is then redirected to
+ * the application's root for normal application processing.
+ */
 class OAuthCallback extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +33,6 @@ class OAuthCallback extends Component {
     this.handleAccessToken = this.handleAccessToken.bind(this);
     this.handleIdToken = this.handleIdToken.bind(this);
     this.storeClaims = this.storeClaims.bind(this);
-    this.clearStorage = this.clearStorage.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
   }
 
@@ -33,6 +44,8 @@ class OAuthCallback extends Component {
         error: 'Expected state value not received from auth server.'
       });
     }
+    let storage = new Storage();
+    storage.deleteConfig('state');
   }
 
   handleAccessToken(accessToken, idToken) {
@@ -79,7 +92,9 @@ class OAuthCallback extends Component {
         this.setState({
           error: 'ID token validation failed.'
         });
-        this.clearStorage(['state', 'nonce']);
+      } finally {
+        let storage = new Storage();
+        storage.deleteConfig('nonce');
       }
     });
   }
@@ -87,13 +102,6 @@ class OAuthCallback extends Component {
   storeClaims(claims) {
     let storage = new Storage();
     storage.setConfig('claims', JSON.stringify(claims));
-  }
-
-  clearStorage(keys) {
-    let storage = new Storage();
-    keys.forEach((key) => {
-      storage.deleteConfig(key);
-    });
   }
 
   handleCallback(url) {

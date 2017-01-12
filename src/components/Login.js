@@ -3,6 +3,12 @@ import { guid, authorizationUrl } from '../util/Helpers';
 import Storage from '../util/Storage';
 import { Container, Message, Button } from 'semantic-ui-react';
 
+/**
+ * This is the login button component. Clicking it will execute an
+ * OAuth 2/OpenID Connect request. The state and nonce values used in
+ * the request are persisted to session storage so that the OAuth 2
+ * callback endpoint can use them when checking the authz/authn response.
+ */
 const Login = ({props}) => {
   const redirect = (event) => {
     console.log("Authorizing and/or authenticating");

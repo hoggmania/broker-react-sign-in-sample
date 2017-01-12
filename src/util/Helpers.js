@@ -1,6 +1,5 @@
 import URI from 'urijs';
 import { OAUTH_CLIENT, BROKER } from '../Config';
-import Storage from './Storage';
 
 export function guid() {
   // See: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -85,12 +84,4 @@ export function getUserData(accessToken) {
       'Accept': 'application/scim+json'
     }
   });
-}
-
-export function getClaims() {
-  let storage = new Storage();
-  if (storage.getConfig('claims')) {
-    return JSON.parse(storage.getConfig('claims'));
-  }
-  return null;
 }

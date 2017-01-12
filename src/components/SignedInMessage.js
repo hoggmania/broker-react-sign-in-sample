@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Message } from 'semantic-ui-react';
 import ScimResource from '../util/Scim';
-import { getClaims } from '../util/Helpers';
 import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 
 class SignedInMessage extends Component {
@@ -24,8 +23,8 @@ class SignedInMessage extends Component {
       let username = null;
       if (this.props.user) {
         username = this.props.user.getValue(SCIM_SCHEMA.username);
-      } else if (getClaims()) {
-        username = getClaims()[OIDC_SCHEMA.username];
+      } else if (this.props.claims) {
+        username = this.props.claims[OIDC_SCHEMA.username];
       }
       const message = `You are now signed in as ${username}.`;
       return username != null ? (

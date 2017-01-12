@@ -1,6 +1,5 @@
 import React from 'react';
 import ScimResource from '../util/Scim';
-import { getClaims } from '../util/Helpers';
 import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 import { Container, Table, Icon } from 'semantic-ui-react';
 import './UserDetails.css';
@@ -23,8 +22,8 @@ const UserDetails = props => {
       attrs['email'] = value(props.user.getValue(SCIM_SCHEMA.email));
       attrs['phone'] = value(props.user.getValue(SCIM_SCHEMA.phone));
       attrs['birthday'] = props.user.getValue(SCIM_SCHEMA.birthday);
-    } else if (getClaims()) {
-      const claims = getClaims();
+    } else if (props.claims) {
+      const claims = props.claims;
       attrs['id'] = claims['sub'];
       attrs['username'] = claims[OIDC_SCHEMA.username];
       attrs['name'] = claims[OIDC_SCHEMA.fullName];

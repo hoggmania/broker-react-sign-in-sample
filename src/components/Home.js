@@ -8,8 +8,8 @@ import { Container } from 'semantic-ui-react';
 
 const Home = props => (
     <Container>
-      <SignedInMessage user={props.user}/>
-      <UserDetails user={props.user}/>
+      <SignedInMessage user={props.user} claims={props.claims}/>
+      <UserDetails user={props.user} claims={props.claims}/>
       <AuthenticationClaims claims={props.claims}/>
       <Logout/>
     </Container>

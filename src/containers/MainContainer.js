@@ -5,8 +5,16 @@ import Login from '../components/Login';
 import Home from '../components/Home';
 import Error from '../components/Error';
 import ScimResource from '../util/Scim';
-import { getUserData, getClaims } from '../util/Helpers';
+import { getUserData } from '../util/Helpers';
 
+/**
+ * This class is responsible for displaying the main application UI.
+ * If an access token is available via props, then it will use it to
+ * retrieve the user profile via SCIM. User profile data may also be
+ * available in the OpenID Connect claims received as props. Both the
+ * SCIM user object and the OIDC claims are then passed down to child
+ * components.
+ */
 class MainContainer extends Component {
   constructor(props) {
     super(props);
@@ -46,21 +54,21 @@ class MainContainer extends Component {
   handleClaims() {
     this.setState({
       loadingMessage: null,
-      claims: getClaims()
+      claims: this.props.claims
     });
   }
 
   componentDidMount() {
     console.log('accessToken: ', this.props.accessToken);
-    console.log('claims: ', getClaims());
+    console.log('claims: ', this.props.claims);
 
     if (this.props.accessToken) {
       this.handleAccessToken();
     }
-    if (getClaims()) {
+    if (this.props.claims) {
       this.handleClaims();
     }
-    if (!this.props.accessToken && !getClaims()) {
+    if (!this.props.accessToken && !this.props.claims) {
       console.log("No access token or OIDC claims found");
       this.setState({
         loadingMessage: null
@@ -81,7 +89,7 @@ class MainContainer extends Component {
           <Loading message={this.state.loadingMessage}/>
       );
     }
-    return this.props.accessToken || getClaims()
+    return this.state.user || this.state.claims
         ? (
             <LayoutContainer>
               <Home
@@ -102,7 +110,8 @@ class MainContainer extends Component {
 }
 
 MainContainer.propTypes = {
-  accessToken: React.PropTypes.string
+  accessToken: React.PropTypes.string,
+  claims: React.PropTypes.object
 };
 
 export default MainContainer;
