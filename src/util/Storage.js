@@ -17,7 +17,9 @@ class Storage {
   }
 
   deleteConfig(key) {
-    this.storage().removeItem(Storage._prefixedKey(key));
+    if (this.getConfig(key)) {
+      this.storage().removeItem(Storage._prefixedKey(key));
+    }
   }
 }
 

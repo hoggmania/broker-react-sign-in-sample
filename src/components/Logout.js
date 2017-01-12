@@ -10,6 +10,7 @@ const Logout = ({props}) => {
     const state = guid();
     let storage = new Storage();
     storage.setConfig('state', state);
+    storage.deleteConfig('accessToken');
     storage.deleteConfig('claims');
     window.location = logoutUrl(state).toString();
   };
