@@ -215,6 +215,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       chunks: ['callback'],
+      filename: 'callback.html',
       template: paths.callbackHtml,
       minify: {
         removeComments: true,
