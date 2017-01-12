@@ -6,6 +6,7 @@ export const OAUTH_CLIENT = {
   // Space-delimited list of OAuth2 Scopes
   scope: 'openid email name phone birthday',
   redirectUri: 'http://localhost:3000/callback.html',
+  // Valid responseType values are 'token id_token', 'token', and 'id_token'
   responseType: 'token id_token',
   prompt: '',
   acrValues: '',
