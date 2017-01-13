@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import ReactRedirect from 'react-redirect';
 import { parseParamsFromUrl, getJwks } from './util/Helpers';
-import Storage from './util/Storage';
 import JwsVerifier from './util/JwsVerifier';
 import { OAUTH_CLIENT, OIDC } from './Config';
 import LayoutContainer from './containers/LayoutContainer';
@@ -44,14 +43,12 @@ class OAuthCallback extends Component {
         error: 'Expected state value not received from auth server.'
       });
     }
-    let storage = new Storage();
-    storage.deleteConfig('state');
+    this.props.storage.deleteConfig('state');
   }
 
   handleAccessToken(accessToken, idToken) {
     console.log('Storing access token', idToken);
-    let storage = new Storage();
-    storage.setConfig('accessToken', accessToken);
+    this.props.storage.setConfig('accessToken', accessToken);
     if (!idToken) {
       this.setState({
         ready: true
@@ -93,23 +90,20 @@ class OAuthCallback extends Component {
           error: 'ID token validation failed.'
         });
       } finally {
-        let storage = new Storage();
-        storage.deleteConfig('nonce');
+        this.props.storage.deleteConfig('nonce');
       }
     });
   }
 
   storeClaims(claims) {
-    let storage = new Storage();
-    storage.setConfig('claims', JSON.stringify(claims));
+    this.props.storage.setConfig('claims', JSON.stringify(claims));
   }
 
   handleCallback(url) {
     let params = parseParamsFromUrl(url);
-    let storage = new Storage();
 
     if (params['state']) {
-      this.checkState(storage.getConfig('state'), params['state']);
+      this.checkState(this.props.storage.getConfig('state'), params['state']);
     }
 
     if (params['access_token'] || params['id_token']) {
@@ -117,7 +111,7 @@ class OAuthCallback extends Component {
         this.handleAccessToken(params['access_token'], params['id_token']);
       }
       if (params['id_token']) {
-        this.handleIdToken(params['id_token'], storage.getConfig('nonce'));
+        this.handleIdToken(params['id_token'], this.props.storage.getConfig('nonce'));
       }
     } else {
       if (params['error']) {
@@ -166,6 +160,11 @@ class OAuthCallback extends Component {
     );
   }
 }
+
+OAuthCallback.propTypes = {
+  url: React.PropTypes.string.isRequired,
+  storage: React.PropTypes.object.isRequired
+};
 
 OAuthCallback.defaultProps = {
   url: window.location.href

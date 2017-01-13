@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import MainContainer from './containers/MainContainer';
-import Storage from './util/Storage';
 import { Container } from 'semantic-ui-react';
 import './App.css';
+
 
 /**
  * This is the application's main entry point. Its job is to pull any
@@ -13,18 +13,25 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      accessToken: null,
+      claims: null
+    };
     this.handleTokens = this.handleTokens.bind(this);
   }
 
   handleTokens() {
-    let storage = new Storage();
-    if (storage.getConfig('accessToken')) {
-      this.accessToken = storage.getConfig('accessToken');
-      storage.deleteConfig('accessToken');
+    if (this.props.storage.getConfig('accessToken')) {
+      this.setState({
+        accessToken: this.props.storage.getConfig('accessToken')
+      });
+      this.props.storage.deleteConfig('accessToken');
     }
-    if (storage.getConfig('claims')) {
-      this.claims = JSON.parse(storage.getConfig('claims'));
-      storage.deleteConfig('claims');
+    if (this.props.storage.getConfig('claims')) {
+      this.setState({
+        claims: JSON.parse(this.props.storage.getConfig('claims'))
+      });
+      this.props.storage.deleteConfig('claims');
     }
   }
 
@@ -36,12 +43,16 @@ class App extends Component {
     return (
       <Container className="App">
         <MainContainer
-            accessToken={this.accessToken}
-            claims={this.claims}
+            accessToken={this.state.accessToken}
+            claims={this.state.claims}
         />
       </Container>
     );
   }
 }
+
+App.propTypes = {
+  storage: React.PropTypes.object.isRequired
+};
 
 export default App;
