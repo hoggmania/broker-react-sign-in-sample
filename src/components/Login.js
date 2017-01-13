@@ -9,7 +9,7 @@ import { Container, Message, Button } from 'semantic-ui-react';
  * the request are persisted to session storage so that the OAuth 2
  * callback endpoint can use them when checking the authz/authn response.
  */
-const Login = ({props}) => {
+const Login = (props) => {
   const redirect = (event) => {
     console.log("Authorizing and/or authenticating");
     event.preventDefault();
@@ -18,7 +18,7 @@ const Login = ({props}) => {
     let storage = new Storage();
     storage.setConfig('state', state);
     storage.setConfig('nonce', nonce);
-    window.location = authorizationUrl(state, nonce).toString();
+    props.redirect(authorizationUrl(state, nonce).toString());
   };
 
   return (
@@ -37,6 +37,10 @@ const Login = ({props}) => {
         </Message>
       </Container>
   );
+};
+
+Login.propTypes = {
+  redirect: React.PropTypes.func.isRequired
 };
 
 export default Login;

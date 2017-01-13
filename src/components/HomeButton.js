@@ -2,11 +2,11 @@ import React from 'react';
 import { APP_SETTINGS } from '../Config';
 import { Container, Button } from 'semantic-ui-react';
 
-const HomeButton = ({props}) => {
+const HomeButton = (props) => {
   const redirect = (event) => {
     console.log("Redirecting to application root");
     event.preventDefault();
-    window.location = APP_SETTINGS.rootUri;
+    props.redirect(APP_SETTINGS.rootUri);
   };
 
   return (
@@ -20,6 +20,10 @@ const HomeButton = ({props}) => {
         />
       </Container>
   );
+};
+
+HomeButton.propTypes = {
+  redirect: React.PropTypes.func.isRequired
 };
 
 export default HomeButton;

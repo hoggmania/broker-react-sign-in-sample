@@ -43,7 +43,8 @@ class SignedInMessage extends Component {
 }
 
 SignedInMessage.propTypes = {
-  user: React.PropTypes.instanceOf(ScimResource)
+  user: React.PropTypes.instanceOf(ScimResource),
+  claims: React.PropTypes.object
 };
 
 export default SignedInMessage;

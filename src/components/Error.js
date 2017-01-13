@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Message, Icon } from 'semantic-ui-react';
 import HomeButton from './HomeButton';
+import { redirect } from '../util/Helpers';
 
 const Error = props => (
     <Container>
@@ -14,7 +15,7 @@ const Error = props => (
           <p>{props.errorDetail}</p>
         </Message.Content>
       </Message>
-      <HomeButton/>
+      <HomeButton redirect={redirect}/>
     </Container>
 );
 

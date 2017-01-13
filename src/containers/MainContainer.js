@@ -5,7 +5,7 @@ import Login from '../components/Login';
 import Home from '../components/Home';
 import Error from '../components/Error';
 import ScimResource from '../util/Scim';
-import { getUserData } from '../util/Helpers';
+import { getUserData, redirect } from '../util/Helpers';
 
 /**
  * This class is responsible for displaying the main application UI.
@@ -101,7 +101,7 @@ class MainContainer extends Component {
         )
         : (
             <LayoutContainer>
-              <Login/>
+              <Login redirect={redirect}/>
             </LayoutContainer>
         );
     // Note: Rendering the Login component is not strictly necessary.

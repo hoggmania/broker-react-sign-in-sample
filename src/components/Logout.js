@@ -10,14 +10,14 @@ import { Container, Button } from 'semantic-ui-react';
  * logout request is persisted to session storage so that the OAuth 2
  * callback endpoint can use it when checking the redirect response.
  */
-const Logout = ({props}) => {
+const Logout = (props) => {
   const redirect = (event) => {
     console.log("Logging out");
     event.preventDefault();
     const state = guid();
     let storage = new Storage();
     storage.setConfig('state', state);
-    window.location = logoutUrl(state).toString();
+    props.redirect(logoutUrl(state).toString());
   };
 
   return (
@@ -31,6 +31,10 @@ const Logout = ({props}) => {
         />
       </Container>
   );
+};
+
+Logout.propTypes = {
+  redirect: React.PropTypes.func.isRequired
 };
 
 export default Logout;

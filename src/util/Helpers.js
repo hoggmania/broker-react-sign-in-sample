@@ -21,7 +21,7 @@ export function parseParamsFromUrl(url) {
   return params;
 }
 
-function parseParams(rawParams) {
+export function parseParams(rawParams) {
   // See: https://developers.google.com/accounts/docs/OAuth2UserAgent
   let params = {};
   const rx = /([^&=]+)=([^&]*)/g;
@@ -39,7 +39,7 @@ export function authorizationUrl(state, nonce) {
       .addQuery('client_id', OAUTH_CLIENT.clientId)
       .addQuery('response_type', OAUTH_CLIENT.responseType)
       .addQuery('scope', OAUTH_CLIENT.scope)
-      .addQuery('redirect_uri', OAUTH_CLIENT.redirectUri)
+      .addQuery('redirect_uri', OAUTH_CLIENT.redirectUri);
   if (state) {
     url.addQuery('state', state);
   }
@@ -84,4 +84,19 @@ export function getUserData(accessToken) {
       'Accept': 'application/scim+json'
     }
   });
+}
+
+export function redirect(url) {
+  window.location.href = url;
+}
+
+// Stubs an event object. Used by tests.
+export function event(name, value) {
+  return {
+    target: {
+      name: name,
+      value: value,
+    },
+    preventDefault: jest.fn()
+  };
 }

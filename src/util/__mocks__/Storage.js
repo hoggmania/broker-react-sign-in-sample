@@ -18,7 +18,7 @@ class Storage {
   }
 
   setConfig(key, value) {
-    this.storage().put(Storage._prefixedKey(key), value);
+    this.storage().set(Storage._prefixedKey(key), value);
   }
 
   deleteConfig(key) {

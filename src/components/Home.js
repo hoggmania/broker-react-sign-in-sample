@@ -4,6 +4,7 @@ import AuthenticationClaims from './AuthenticationClaims';
 import UserDetails from './UserDetails';
 import Logout from './Logout';
 import ScimResource from '../util/Scim';
+import { redirect } from '../util/Helpers';
 import { Container } from 'semantic-ui-react';
 
 const Home = props => (
@@ -11,7 +12,7 @@ const Home = props => (
       <SignedInMessage user={props.user} claims={props.claims}/>
       <UserDetails user={props.user} claims={props.claims}/>
       <AuthenticationClaims claims={props.claims}/>
-      <Logout/>
+      <Logout redirect={redirect}/>
     </Container>
 );
 
