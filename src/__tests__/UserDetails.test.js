@@ -69,11 +69,39 @@ const testJson = `
 }
 `;
 
+const testClaims = {
+  sub: 'Users/2f05b231-8c9d-481d-8b6f-ceefac6852eb',
+  at_hash: 'KBg3F2iUGAL16oZd6NLfOw',
+  acr: 'Default',
+  amr: [ 'pwd' ],
+  iss: 'https://example.com',
+  auth_time: 1484259664,
+  exp: 1484270243,
+  iat: 1484269343,
+  nonce: '67dab715-f312-42d3-9da1-1d486ca0930f',
+  preferred_username: 'cesar.aira',
+  email: 'cesar.aira@gmail.com',
+  name: 'César Aira',
+  phone_number: '+54 902 987 8135',
+  birthdate: '1949-02-23'
+};
+
 describe('The UserDetails component', () => {
-  it("correctly renders a user's attributes", () => {
+  it("correctly renders a user's attributes from a SCIM resource object", () => {
     const user = new ScimResource(JSON.parse(testJson));
     const wrapper = shallow(
         <UserDetails user={user}/>
+    );
+    expect(wrapper.find('#userDetails-username').childAt(0).text()).toEqual('cesar.aira');
+    expect(wrapper.find('#userDetails-name').childAt(0).text()).toEqual('César Aira');
+    expect(wrapper.find('#userDetails-email').childAt(0).text()).toEqual('cesar.aira@gmail.com');
+    expect(wrapper.find('#userDetails-phone').childAt(0).text()).toEqual('+54 902 987 8135');
+    expect(wrapper.find('#userDetails-birthday').childAt(0).text()).toEqual('1949-02-23');
+  });
+
+  it("correctly renders a user's attributes from an OpenID Connect claims object", () => {
+    const wrapper = shallow(
+        <UserDetails claims={testClaims}/>
     );
     expect(wrapper.find('#userDetails-username').childAt(0).text()).toEqual('cesar.aira');
     expect(wrapper.find('#userDetails-name').childAt(0).text()).toEqual('César Aira');
