@@ -65,7 +65,7 @@ export const OIDC = {
 };
 ```
 
-And you'll need to set the service URLs for yourBroker installation:
+And you'll need to set the service URLs for your Broker installation:
 
 ```javascript
 // Data Governance Broker service URLs.
