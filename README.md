@@ -98,39 +98,65 @@ Look for output in the `build` directory.
 
 ## About this sample
 
+### Basic design
+
 OAuth 2 and OpenID Connect rely on browser redirects to pass 
 authorization and authentication tokens between the auth server and the 
-client application. This application handles that interaction by 
-receiving redirects from the auth server at the `callback.html` 
-endpoint, which processes data received from the auth server, then 
-redirects to the main application's `index.html` endpoint. Data is 
-shared between the two endpoints using the browser's 
-[web storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).
+client application. For client side applications, data is provided as 
+key/value pairs attached to the _fragment_ (or _hash_) component of the 
+redirect URL. 
+
+This sample application handles that interaction by defining two endpoints:
+
+1. A main application endpoint at `index.html`
+2. A callback endpoint at `callback.html`
+
+The application receives redirects from the auth server at the 
+`callback.html` endpoint. This endpoint processes and validates the 
+auth data received from the Broker, then redirects to the main 
+application's `index.html` endpoint, which performs normal application 
+processing. 
+
+Data is shared between the two endpoints using the browser's 
+[Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API). 
+The main application endpoint clears data from Web Storage as soon as 
+it receives it to limit its potential exposure. 
+
+Alternatives to this pattern include:
+
+* Implementing a single endpoint, which performs normal application 
+processing and receives redirects. The disadvantage to this design is 
+that the presence of callback data in the URL may complicate 
+client-side routing.
+* Popping up a window to handle redirects. 
+
+### OAuth 2 and OpenID Connect requests
 
 A client-side application such as this has three options for 
 interacting with an auth server such as the Data Governance Broker, 
 determined by the `response_type` parameter set by the application when 
 making its auth request. These options are:
 
-* `token id_token`: The client requests both an **access token** (an 
+1. `token id_token`: The client requests both an **access token** (an 
 authorization credential for data access) and an **ID token** (a data 
 structure containing information about the user's authentication state).
-* `token`: The client requests an access token only.
-* `id_token`: The client requests an ID token only.
+2. `token`: The client requests an access token only.
+3. `id_token`: The client requests an ID token only.
 
-The response type used by the application determines _how_ it will 
-obtain user profile data. 
+This in turn determines _how_ the application can obtain user profile 
+data.
 
-* If the application receives an access token (by using a 
-`response_type` of `token id_token` or `token`), then the access token 
-can be used to make separate user data requests to either the 
+* If the application uses one of the first two options (`token id_token` 
+or `token`), then the application will receive an access token (as well 
+as an ID token, in the first case). The access token can be used to make 
+separate user data requests to either the 
 [UserInfo endpoint](https://developer.unboundid.com/6.0.0.1/broker/api/oauth2/userinfo/) 
 or the [SCIM service](https://developer.unboundid.com/6.0.0.1/broker/api/scim/).
-* If the application receives an ID token only (by using a 
-`response_type` of `id_token`), then the application will not be able 
-to make UserInfo or SCIM requests. However, the ID token received from 
-the Broker will include additional 'claims' containing user profile 
-data. See [here](https://developer.unboundid.com/6.0.0.1/broker/api/oauth2/id-tokens/) 
+* If the application uses the third option (`id_token`), then it will 
+receive an ID token only, and it won't be able to make UserInfo or SCIM 
+requests. However, the ID token received from the Broker will include 
+additional 'claims' containing user profile data. See 
+[here](https://developer.unboundid.com/6.0.0.1/broker/api/oauth2/id-tokens/) 
 for more information. 
 
 You can change the response type used by the application by modifying 
@@ -153,7 +179,7 @@ export const OAUTH_CLIENT = {
 
 Note that the scopes requested by the application — also configured in 
 the block above — determine _which_ user profile data are available to 
-the application. 
+the application. This is true regardless of the response type used.
 
 For more information about OAuth 2 and OpenID Connect, see the 
 [Data Governance Broker Client Developer Guide](https://developer.unboundid.com/6.0.0.1/broker/guides/broker-client-developer-guide/).
