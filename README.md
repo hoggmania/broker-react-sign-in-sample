@@ -102,7 +102,7 @@ Look for output in the `build` directory.
 
 OAuth 2 and OpenID Connect rely on browser redirects to pass 
 authorization and authentication tokens between the auth server and the 
-client application. For client side applications, data is provided as 
+client application. For client side applications, data are provided as 
 key/value pairs attached to the _fragment_ (or _hash_) component of the 
 redirect URL. 
 
@@ -117,7 +117,7 @@ auth data received from the Broker, then redirects to the main
 application's `index.html` endpoint, which performs normal application 
 processing. 
 
-Data is shared between the two endpoints using the browser's 
+Data are shared between the two endpoints using the browser's 
 [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API). 
 The main application endpoint clears data from Web Storage as soon as 
 it receives it to limit its potential exposure. 
