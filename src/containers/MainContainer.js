@@ -93,7 +93,6 @@ class MainContainer extends Component {
         ? (
             <Layout>
               <Home
-                  isLoading={this.state.isLoading}
                   user={this.state.user}
                   claims={this.state.claims}
               />
