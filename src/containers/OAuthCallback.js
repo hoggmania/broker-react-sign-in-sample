@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Container } from 'semantic-ui-react';
 import ReactRedirect from 'react-redirect';
-import { parseParamsFromUrl, getJwks } from './util/Helpers';
-import JwsVerifier from './util/JwsVerifier';
-import { OAUTH_CLIENT, OIDC } from './Config';
-import LayoutContainer from './containers/LayoutContainer';
-import Loading from './components/Loading';
-import Error from './components/Error';
-import './App.css';
+import { parseParamsFromUrl, getJwks } from '../util/Helpers';
+import JwsVerifier from '../util/JwsVerifier';
+import { OAUTH_CLIENT, OIDC } from '../Config';
+import Layout from '../components/Layout';
+import Loading from '../components/Loading';
+import Error from '../components/Error';
 
 /**
  * This class is responsible for handling OAuth 2/OpenID Connect
@@ -140,14 +138,12 @@ class OAuthCallback extends Component {
   render() {
     if (this.state.error) {
       return (
-          <Container className="App">
-            <LayoutContainer>
-              <Error
-                  error={this.state.error}
-                  errorDetail={this.state.errorDetail}
-              />
-            </LayoutContainer>
-          </Container>
+          <Layout>
+            <Error
+                error={this.state.error}
+                errorDetail={this.state.errorDetail}
+            />
+          </Layout>
       );
     }
     if (this.state.ready) {

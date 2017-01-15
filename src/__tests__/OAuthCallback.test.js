@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import OAuthCallback from '../OAuthCallback';
+import OAuthCallback from '../containers/OAuthCallback';
 import Storage from '../util/__mocks__/Storage';
 
 const logoutUrl = `http://localhost:3000/callback.html?state=STATE`;

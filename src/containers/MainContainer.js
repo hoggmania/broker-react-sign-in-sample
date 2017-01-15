@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LayoutContainer from '../containers/LayoutContainer';
+import Layout from '../components/Layout';
 import Loading from '../components/Loading';
 import Login from '../components/Login';
 import Home from '../components/Home';
@@ -79,9 +79,9 @@ class MainContainer extends Component {
   render() {
     if (this.state.error) {
       return (
-          <LayoutContainer>
+          <Layout>
             <Error error={this.state.error}/>
-          </LayoutContainer>
+          </Layout>
       );
     }
     if (this.state.loadingMessage !== null) {
@@ -91,18 +91,18 @@ class MainContainer extends Component {
     }
     return this.state.user || this.state.claims
         ? (
-            <LayoutContainer>
+            <Layout>
               <Home
                   isLoading={this.state.isLoading}
                   user={this.state.user}
                   claims={this.state.claims}
               />
-            </LayoutContainer>
+            </Layout>
         )
         : (
-            <LayoutContainer>
+            <Layout>
               <Login redirect={redirect}/>
-            </LayoutContainer>
+            </Layout>
         );
     // Note: Rendering the Login component is not strictly necessary.
     // You could instead redirect the user-agent directly to the auth server.

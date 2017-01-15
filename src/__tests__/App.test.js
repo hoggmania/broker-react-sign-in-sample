@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
-import App from '../App';
+import App from '../containers/App';
 import Storage from '../util/__mocks__/Storage';
 
 const testAccessToken = 'ACCESS_TOKEN';

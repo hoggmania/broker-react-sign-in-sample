@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import MainContainer from './containers/MainContainer';
-import { Container } from 'semantic-ui-react';
-import './App.css';
-
+import MainContainer from './MainContainer';
 
 /**
  * This is the application's main entry point. Its job is to pull any
@@ -41,12 +38,10 @@ class App extends Component {
 
   render() {
     return (
-      <Container className="App">
-        <MainContainer
-            accessToken={this.state.accessToken}
-            claims={this.state.claims}
-        />
-      </Container>
+      <MainContainer
+          accessToken={this.state.accessToken}
+          claims={this.state.claims}
+      />
     );
   }
 }
