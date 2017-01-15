@@ -131,7 +131,7 @@ class OAuthCallback extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.handleCallback(this.props.url);
   }
 
