@@ -89,22 +89,23 @@ class MainContainer extends Component {
           <Loading message={this.state.loadingMessage}/>
       );
     }
-    return this.state.user || this.state.claims
-        ? (
-            <Layout>
-              <Home
-                  user={this.state.user}
-                  claims={this.state.claims}
-              />
-            </Layout>
-        )
-        : (
-            <Layout>
-              <Login redirect={redirect}/>
-            </Layout>
-        );
+    if (this.state.user || this.state.claims) {
+      return (
+          <Layout>
+            <Home
+                user={this.state.user}
+                claims={this.state.claims}
+            />
+          </Layout>
+      );
+    }
     // Note: Rendering the Login component is not strictly necessary.
     // You could instead redirect the user-agent directly to the auth server.
+    return (
+        <Layout>
+          <Login redirect={redirect}/>
+        </Layout>
+    );
   }
 }
 
