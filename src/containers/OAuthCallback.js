@@ -71,12 +71,11 @@ class OAuthCallback extends Component {
         alg: [ OIDC.jwa ],
         iss: OIDC.issuer,
         aud: OAUTH_CLIENT.clientId,
-        nonce: expectedNonce,
-        gracePeriod: OIDC.gracePeriod
+        nonce: expectedNonce
       };
 
       try {
-        const claims = JwsVerifier.verify(idToken, jwk, expectedClaims);
+        const claims = this.props.jwsVerifier.verify(idToken, jwk, expectedClaims);
         console.log('Validated ID token');
         this.storeClaims(claims);
         this.setState({
@@ -159,11 +158,13 @@ class OAuthCallback extends Component {
 
 OAuthCallback.propTypes = {
   url: React.PropTypes.string.isRequired,
-  storage: React.PropTypes.object.isRequired
+  storage: React.PropTypes.object.isRequired,
+  jwsVerifier: React.PropTypes.object.isRequired
 };
 
 OAuthCallback.defaultProps = {
-  url: window.location.href
+  url: window.location.href,
+  jwsVerifier: new JwsVerifier()
 };
 
 export default OAuthCallback;

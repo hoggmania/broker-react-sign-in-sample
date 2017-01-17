@@ -1,10 +1,14 @@
 import JwsVerifier from '../util/JwsVerifier';
+import { readJsonFile } from '../util/TestHelpers';
 
-const jwk = JSON.parse(`{"kty":"RSA","use":"sig","kid":"rsa-idtoken","n":"ALeGdWfL/eyQOloX3qoS86GYTLcCjpPMQg+n8ETfRcQqEBhXq6i1i1vbA9cDHtqaPDBdkMv5LOQutZVSmnskfwwPxCfoJsHIkLlQhItpkU2aE00P5MH1mABPD1sEOlXN9UV2RKpOXKPtz/HL0F01+pS9l7/e0bupQ95tTbCFM2rZETkbTRijOPMYyBSEFyX73iPFuvscanm/swB9GXYs6wJnsW/EbriwnM+0xkO9BwAJ13lZ02f0cY29/UNGdXAth/BkslDQ958uFx+HFSH0akQ6OUcIkP7d5bDfNZr+ME0fxbSiqIEw/F5/TXtUoQ1kGaq+uje8ZfqM2INBfsRoXfM=","e":"AQAB","x5c":["MIIDIzCCAgugAwIBAgIEZfkOyTANBgkqhkiG9w0BAQsFADBCMR8wHQYDVQQKExZQaW5nIElkZW50aXR5IEtleSBQYWlyMR8wHQYDVQQDExZEYXRhIEdvdmVybmFuY2UgQnJva2VyMB4XDTE2MTExNjE3MTY0MloXDTM2MTExMTE3MTY0MlowQjEfMB0GA1UEChMWUGluZyBJZGVudGl0eSBLZXkgUGFpcjEfMB0GA1UEAxMWRGF0YSBHb3Zlcm5hbmNlIEJyb2tlcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALeGdWfL/eyQOloX3qoS86GYTLcCjpPMQg+n8ETfRcQqEBhXq6i1i1vbA9cDHtqaPDBdkMv5LOQutZVSmnskfwwPxCfoJsHIkLlQhItpkU2aE00P5MH1mABPD1sEOlXN9UV2RKpOXKPtz/HL0F01+pS9l7/e0bupQ95tTbCFM2rZETkbTRijOPMYyBSEFyX73iPFuvscanm/swB9GXYs6wJnsW/EbriwnM+0xkO9BwAJ13lZ02f0cY29/UNGdXAth/BkslDQ958uFx+HFSH0akQ6OUcIkP7d5bDfNZr+ME0fxbSiqIEw/F5/TXtUoQ1kGaq+uje8ZfqM2INBfsRoXfMCAwEAAaMhMB8wHQYDVR0OBBYEFPSM5kJzN6Wtypf97HiNCLmcOIQSMA0GCSqGSIb3DQEBCwUAA4IBAQA+rR4t9BOQ8xDw1jk7UdxRZpNmoUgry6NGlWT6TkAcElhri7rZNh8XjgM5HQOmgqm+nxtQNRmWLmR2fLKF67CoFZNW1cAxr9eUoAtdxLoWKjwa2xoLcHoPEhscuSPOj303hbklZk9X+DNA9axR1PII5QljS+hE8h6LfVsdVeQZ25BSpG12t5Au9irp87DYVtqWOb0b159A2OL6ks/l+XZe2oOL9tn0PULilZ3dkdPUfTgMStA/pD+OEti+v4WEql45zyxDwwHy7QZPclm31OAhad/gTS+9vluUiEO5O15cUHpvwVwKekmBEHu8u35ClXb0hKsL/K2JzzfOMDTZ7KH7"]}`);
+const jwks = readJsonFile(__dirname + '/resources/jwks.json');
+const jwk = jwks.keys.find((jwk) => {
+  return jwk.kid === 'sample-idtoken-key';
+});
 
-const rsaJws = 'eyJraWQiOiJyc2EtaWR0b2tlbiIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoiSnFObWhDWEFBZ3VRZjMtX2dsSmdLZyIsImFjciI6IkRlZmF1bHQiLCJzdWIiOiJVc2Vyc1wvYTFmZTJlMmEtNGI5Zi00MjRjLWI1ZDYtNDY3ZDQ4NmNlMDFjIiwiYXVkIjoiYnJva2VyLXJlYWN0LXNpZ24taW4tc2FtcGxlIiwiYW1yIjpbInB3ZCJdLCJhdXRoX3RpbWUiOjE0ODQxNjYxMjEsImlzcyI6Imh0dHBzOlwvXC92bS1zbWFsbC0zNC51bmJvdW5kaWQubGFiIiwiZXhwIjoxNDg0MTY3MDIzLCJpYXQiOjE0ODQxNjYxMjMsIm5vbmNlIjoiM2YyOGNiZGUtMjI0ZS00NDZjLTlhZGEtYjgzMjFlYTA5YzA1In0.PMba11K97VuIAlL5TEDRHLpx5rltmcfJ2Tz1XhGK2lEJYfCTPCL9uANw-yo6wAoYvY7kZJZ7sPzFGac3f4rdy_62MHtwlIGe5alXjMQV1K48mi3xHryusk_AGj8mv0DFPlLDv9uKZGWrkl0SenzTDwzDz_95abDVzZhKFoWOEbB76R0NCqFcNno_v6EOqTUGqPnVHOauURRVzQOEkHE1sJlbQNSa5FHp-X-PantoT9bx6oGy854dbulF20_-XpOeukdMN0Onudb4yTAYaau_D5t5jP8vWxrJNoMk93OUSwSSwyM5HpFH9FG0G4pZlHETo7gzHjJKun3gmGLlpkmh9w';
+const rsaJws = 'eyJraWQiOiJzYW1wbGUtaWR0b2tlbi1rZXkiLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoiLWJOcjRqbFpqc2E1SHpkWWg4N2NWUSIsImFjciI6IkRlZmF1bHQiLCJzdWIiOiJVc2Vyc1wvYmIyNGRhNTktNmE5MS00YzQxLTlhYjctZjRmM2ExNDc5MGI0IiwiYXVkIjoicmVhY3Qtc2lnbi1pbi1zYW1wbGUiLCJhbXIiOlsicHdkIl0sImF1dGhfdGltZSI6MTQ4NDY3NzQxMiwiaXNzIjoiaHR0cHM6XC9cL2V4YW1wbGUuY29tIiwiZXhwIjoxNDg0Njc4MzE1LCJpYXQiOjE0ODQ2Nzc0MTUsIm5vbmNlIjoiTk9OQ0UifQ.Te6G2x2XXI-iaE2DDfoAdIegirUR67RpWpRcZMuVAQQgvoNX2tm9rlNE3PFi7HSiS25wTl5jtT9suMHgCuWmkE1R6Pia7YgKvKQWWKHslzjl6qVt_2R_buv2ys-4bNIH5hefzi0alsvIJtLSbt-VZMXDUR_jZbuMnK2rgs_codM-PbIo_b2-C4zcxkpJUMV-8Cmk3IrmhhL_k4UEdKKO78lrgpSNXp5cGCkOrVUxOggQto5hzUgNwJUbYtu6PRo-S-bi6tU6v11iP3d826Fr4jlQAQ304gFFVWK9eVdzDcW62DB0YgcSgH1zX1loTVwIf4AEh0nVeTjHn07rPtNz_Q';
 
-const hmacJws = 'eyJhbGciOiJIUzI1NiJ9.eyJhdF9oYXNoIjoiaUJlWnhSUnM3WnlDQzE5aHZ5YTJHQSIsImFjciI6IkRlZmF1bHQiLCJzdWIiOiJVc2Vyc1wvYTFmZTJlMmEtNGI5Zi00MjRjLWI1ZDYtNDY3ZDQ4NmNlMDFjIiwiYXVkIjoiQG15LWFjY291bnRAIiwiYW1yIjpbInB3ZCJdLCJhdXRoX3RpbWUiOjE0ODQxNjYxMjEsImlzcyI6Imh0dHBzOlwvXC92bS1zbWFsbC0zNC51bmJvdW5kaWQubGFiIiwiZXhwIjoxNDg0MTY3NjE5LCJpYXQiOjE0ODQxNjY3MTksIm5vbmNlIjoiYXNkZmFkc2YifQ.567eLnTySEGV5qhqSkXtFZLqOGpUUlbMBEBStzpoHvQ';
+const hmacJws = 'eyJhbGciOiJIUzI1NiJ9.eyJhdF9oYXNoIjoiLW5QVC13SW9tUkpibUd1ckk2RWxDZyIsImFjciI6IkRlZmF1bHQiLCJzdWIiOiJVc2Vyc1wvYmIyNGRhNTktNmE5MS00YzQxLTlhYjctZjRmM2ExNDc5MGI0IiwiYXVkIjoiQG15LWFjY291bnRAIiwiYW1yIjpbInB3ZCJdLCJhdXRoX3RpbWUiOjE0ODQ2Nzc0MTIsImlzcyI6Imh0dHBzOlwvXC9leGFtcGxlLmNvbSIsImV4cCI6MTQ4NDY5Nzc4NywiaWF0IjoxNDg0Njk2ODg3LCJub25jZSI6Ik5PTkNFIn0.az1svYiXeIpYbF0bIrppPFMf8GYAsvOrxMAHXPTUNIM';
 
 const invalidJwt = 'nope.no.good';
 
@@ -15,65 +19,67 @@ const gracePeriod = Math.floor(new Date() / 1000);
 
 describe('The JWS verifier', () => {
   it('can verify a valid JWS', () => {
+    const jwsVerifier = new JwsVerifier(gracePeriod);
     expect(() => {
-      JwsVerifier.verify(rsaJws, jwk, { alg: [ 'RS256' ], gracePeriod: gracePeriod });
+      jwsVerifier.verify(rsaJws, jwk, { alg: [ 'RS256' ], gracePeriod: gracePeriod });
     }).not.toThrow();
     expect(() => {
-      JwsVerifier.verify(rsaJws, jwk, {
+      jwsVerifier.verify(rsaJws, jwk, {
         alg: [ 'RS256' ],
-        iss: 'https://vm-small-34.unboundid.lab',
-        aud: 'broker-react-sign-in-sample',
-        nonce: '3f28cbde-224e-446c-9ada-b8321ea09c05',
-        gracePeriod: gracePeriod
+        iss: 'https://example.com',
+        aud: 'react-sign-in-sample',
+        nonce: 'NONCE'
       });
     }).not.toThrow();
   });
 
   it('rejects a JWS with a mismatched nonce', () => {
+    const jwsVerifier = new JwsVerifier(gracePeriod);
     expect(() => {
-      JwsVerifier.verify(rsaJws, jwk, {
+      jwsVerifier.verify(rsaJws, jwk, {
         alg: [ 'RS256' ],
-        iss: 'https://vm-small-34.unboundid.lab',
-        aud: 'broker-react-sign-in-sample',
-        nonce: 'WRONG',
-        gracePeriod: gracePeriod
+        iss: 'https://example.com',
+        aud: 'react-sign-in-sample',
+        nonce: 'WRONG'
       });
     }).toThrow();
   });
 
   it('rejects a JWS with a mismatched aud claim', () => {
+    const jwsVerifier = new JwsVerifier(gracePeriod);
     expect(() => {
-      JwsVerifier.verify(rsaJws, jwk, {
+      jwsVerifier.verify(rsaJws, jwk, {
         alg: [ 'RS256' ],
-        iss: 'https://vm-small-34.unboundid.lab',
-        aud: 'WRONG',
-        gracePeriod: gracePeriod
+        iss: 'https://example.com',
+        aud: 'WRONG'
       });
     }).toThrow();
   });
 
   it('rejects a JWS with a mismatched iss claim', () => {
+    const jwsVerifier = new JwsVerifier(gracePeriod);
     expect(() => {
-      JwsVerifier.verify(rsaJws, jwk, {
+      jwsVerifier.verify(rsaJws, jwk, {
         alg: [ 'RS256' ],
-        iss: 'https://wrong.com',
-        gracePeriod: gracePeriod
+        iss: 'https://wrong.com'
       });
     }).toThrow();
   });
 
   it('rejects an HMAC-signed JWS', () => {
+    const jwsVerifier = new JwsVerifier(gracePeriod);
     expect(() => {
-      JwsVerifier.verify(hmacJws, jwk, { alg: [ 'HS256' ], gracePeriod: gracePeriod });
+      jwsVerifier.verify(hmacJws, jwk, { alg: [ 'HS256' ], gracePeriod: gracePeriod });
     }).toThrow();
     expect(() => {
-      JwsVerifier.verify(hmacJws, jwk, { gracePeriod: gracePeriod });
+      jwsVerifier.verify(hmacJws, jwk, { gracePeriod: gracePeriod });
     }).toThrow();
   });
 
   it ('rejects a completely invalid JWT', () => {
+    const jwsVerifier = new JwsVerifier(gracePeriod);
     expect(() => {
-      JwsVerifier.verify(invalidJwt, jwk);
+      jwsVerifier.verify(invalidJwt, jwk);
     }).toThrow();
   });
 });

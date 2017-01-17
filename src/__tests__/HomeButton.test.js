@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import HomeButton from '../components/HomeButton';
 import { APP_SETTINGS } from '../Config';
-import { event } from '../util/Helpers';
+import { event } from '../util/TestHelpers';
 
 jest.mock('../util/Storage');
 

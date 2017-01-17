@@ -2,7 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Login from '../components/Login';
 import { OAUTH_CLIENT, BROKER } from '../Config';
-import { parseParams, event } from '../util/Helpers';
+import { parseParams } from '../util/Helpers';
+import { event } from '../util/TestHelpers';
 import URI from 'urijs';
 
 jest.mock('../util/Storage');

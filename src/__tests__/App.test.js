@@ -1,51 +1,38 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import App from '../containers/App';
 import Storage from '../util/__mocks__/Storage';
+import { readJsonFile } from '../util/TestHelpers';
+
+global.fetch = require('jest-fetch-mock');
 
 const testAccessToken = 'ACCESS_TOKEN';
-
-const testClaims = {
-  sub: 'Users/2f05b231-8c9d-481d-8b6f-ceefac6852eb',
-  at_hash: 'KBg3F2iUGAL16oZd6NLfOw',
-  acr: 'Default',
-  amr: [ 'pwd' ],
-  iss: 'https://example.com',
-  auth_time: 1484259664,
-  exp: 1484270243,
-  iat: 1484269343,
-  nonce: '67dab715-f312-42d3-9da1-1d486ca0930f',
-  preferred_username: 'cesar.aira',
-  email: 'cesar.aira@gmail.com',
-  name: 'César Aira',
-  phone_number: '+54 902 987 8135',
-  birthdate: '1949-02-23'
-};
+const testUser = readJsonFile(__dirname + '/resources/user.json');
+const testClaims = readJsonFile(__dirname + '/resources/claims.json');
 
 describe('The app', () => {
-  it('renders without crashing', () => {
+  it('passes props to MainContainer correctly when no access token or claims set is present', () => {
     const storage = new Storage();
-    const div = document.createElement('div');
-    ReactDOM.render(<App storage={storage}/>, div);
-  });
-
-  it('sets its state when no access token or claims set is present', () => {
-    const storage = new Storage();
-    const wrapper = shallow(
+    const wrapper = mount(
         <App storage={storage}/>
     );
-    expect(wrapper.state.accessToken).toBeFalsy();
+    const mainContainer = wrapper.find('MainContainer').first();
+    expect(mainContainer).not.toBeNull();
+    expect(mainContainer.props().accessToken).toBeNull();
+    expect(mainContainer.props().claims).toBeNull();
   });
 
-  it('sets its state when an access token and claims set are present', () => {
+  it('passes props to MainContainer correctly when an access token or claims set is present', () => {
+    fetch.mockResponseOnce(JSON.stringify(testUser));
     const storage = new Storage();
     storage.setConfig('accessToken', testAccessToken);
     storage.setConfig('claims', JSON.stringify(testClaims));
-    const wrapper = shallow(
+    const wrapper = mount(
         <App storage={storage}/>
     );
-    expect(wrapper.state('accessToken')).toEqual(testAccessToken);
-    expect(wrapper.state('claims')).toEqual(testClaims);
+    const mainContainer = wrapper.find('MainContainer').first();
+    expect(mainContainer).not.toBeNull();
+    expect(mainContainer.props().accessToken).toEqual(testAccessToken);
+    expect(mainContainer.props().claims).toEqual(testClaims);
   });
 });

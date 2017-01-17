@@ -1,4 +1,5 @@
 import { KJUR, KEYUTIL } from 'jsrsasign';
+import { OIDC } from '../Config';
 
 // This utility class verifies signed JWT (JWS) tokens, with the
 // following caveats:
@@ -8,6 +9,11 @@ import { KJUR, KEYUTIL } from 'jsrsasign';
 //
 
 class JwsVerifier {
+  constructor(gracePeriod = OIDC.gracePeriod) {
+    this.gracePeriod = gracePeriod;
+    this.verify = this.verify.bind(this);
+  }
+
   static _jwkToPublicKey(jwk) {
     if (jwk.x5c && jwk.x5c.length > 0) {
       const key = jwk.x5c[0];
@@ -19,9 +25,10 @@ class JwsVerifier {
     }
   }
 
-  static verify(jwt, jwk, expectedClaims) {
+  verify(jwt, jwk, expectedClaims) {
     let claims = {
-      alg: [ 'RS256' ]
+      alg: [ 'RS256' ],
+      gracePeriod: this.gracePeriod
     };
     Object.assign(claims, expectedClaims);
 
@@ -34,22 +41,23 @@ class JwsVerifier {
     }
     // The jsrsasign library will check some claims for us, but we'll
     // have better error messaging if we check some manually.
-    let parsedJwt = KJUR.jws.JWS.parse(jwt);
+    const parsedJwt = KJUR.jws.JWS.parse(jwt);
+    const actualClaims = parsedJwt.payloadObj;
     if (claims.nonce) {
-      if (parsedJwt.payloadObj.nonce !== claims.nonce) {
+      if (actualClaims.nonce !== claims.nonce) {
         throw new Error("nonce claim does not match");
       }
       delete claims.nonce;
     }
     if (claims.iss) {
-      if (parsedJwt.payloadObj.iss !== claims.iss) {
-        throw new Error("iss claim does not match");
+      if (actualClaims.iss !== claims.iss) {
+        throw new Error(`iss claim '${actualClaims.iss}' does not match expected claim '${claims.iss}'`);
       }
       delete claims.iss;
     }
     if (claims.aud) {
       if (parsedJwt.payloadObj.aud !== claims.aud) {
-        throw new Error("aud claim does not match");
+        throw new Error(`aud claim '${actualClaims.aud}' does not match expected claim '${claims.aud}'`);
       }
       delete claims.aud;
     }
@@ -58,7 +66,7 @@ class JwsVerifier {
     if (!KJUR.jws.JWS.verifyJWT(jwt, JwsVerifier._jwkToPublicKey(jwk), claims)) {
       throw new Error("ID token validation failed");
     }
-    return parsedJwt.payloadObj;
+    return actualClaims;
   }
 }
 
