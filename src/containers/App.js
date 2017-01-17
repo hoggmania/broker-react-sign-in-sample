@@ -14,33 +14,25 @@ class App extends Component {
       accessToken: null,
       claims: null
     };
-    this.handleTokens = this.handleTokens.bind(this);
+    this.getAndDelete = this.getAndDelete.bind(this);
   }
 
-  handleTokens() {
-    if (this.props.storage.getConfig('accessToken')) {
-      this.setState({
-        accessToken: this.props.storage.getConfig('accessToken')
-      });
-      this.props.storage.deleteConfig('accessToken');
+  getAndDelete(key) {
+    let value = null;
+    if (this.props.storage.getConfig(key)) {
+      value = this.props.storage.getConfig(key);
+      this.props.storage.deleteConfig(key);
     }
-    if (this.props.storage.getConfig('claims')) {
-      this.setState({
-        claims: JSON.parse(this.props.storage.getConfig('claims'))
-      });
-      this.props.storage.deleteConfig('claims');
-    }
-  }
-
-  componentWillMount() {
-    this.handleTokens();
+    return value;
   }
 
   render() {
+    const accessToken = this.getAndDelete('accessToken');
+    let claims = JSON.parse(this.getAndDelete('claims'));
     return (
       <MainContainer
-          accessToken={this.state.accessToken}
-          claims={this.state.claims}
+          accessToken={accessToken}
+          claims={claims}
       />
     );
   }
