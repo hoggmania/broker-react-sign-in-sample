@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Message } from 'semantic-ui-react';
-import ScimResource from '../util/Scim';
+import { Resource } from '@braveulysses/scim2';
 import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 
 class SignedInMessage extends Component {
@@ -22,7 +22,7 @@ class SignedInMessage extends Component {
     if (this.state.visible) {
       let username = null;
       if (this.props.user) {
-        username = this.props.user.getValue(SCIM_SCHEMA.username);
+        username = this.props.user.get(SCIM_SCHEMA.username);
       } else if (this.props.claims) {
         username = this.props.claims[OIDC_SCHEMA.username];
       }
@@ -43,7 +43,7 @@ class SignedInMessage extends Component {
 }
 
 SignedInMessage.propTypes = {
-  user: React.PropTypes.instanceOf(ScimResource),
+  user: React.PropTypes.instanceOf(Resource),
   claims: React.PropTypes.object
 };
 

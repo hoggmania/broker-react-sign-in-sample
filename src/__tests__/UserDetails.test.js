@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ScimResource from '../util/Scim';
+import { Resource } from '@braveulysses/scim2';
 import UserDetails from '../components/UserDetails';
 import { readJsonFile } from '../util/TestHelpers';
 
@@ -9,7 +9,7 @@ const testClaims = readJsonFile(__dirname + '/resources/claims.json');
 
 describe('The UserDetails component', () => {
   it("correctly renders a user's attributes from a SCIM resource object", () => {
-    const user = new ScimResource(testUser);
+    const user = new Resource(testUser);
     const wrapper = shallow(
         <UserDetails user={user}/>
     );

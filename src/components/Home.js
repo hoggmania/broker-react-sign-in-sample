@@ -3,7 +3,7 @@ import SignedInMessage from './SignedInMessage';
 import AuthenticationClaims from './AuthenticationClaims';
 import UserDetails from './UserDetails';
 import Logout from './Logout';
-import ScimResource from '../util/Scim';
+import { Resource } from '@braveulysses/scim2';
 import { redirect } from '../util/Helpers';
 import { Container } from 'semantic-ui-react';
 
@@ -17,7 +17,7 @@ const Home = props => (
 );
 
 Home.propTypes = {
-  user: React.PropTypes.instanceOf(ScimResource),
+  user: React.PropTypes.instanceOf(Resource),
   claims: React.PropTypes.object
 };
 

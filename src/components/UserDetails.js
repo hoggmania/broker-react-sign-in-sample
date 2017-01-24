@@ -1,5 +1,5 @@
 import React from 'react';
-import ScimResource from '../util/Scim';
+import { Resource } from '@braveulysses/scim2';
 import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 import { Container, Table, Icon } from 'semantic-ui-react';
 import './UserDetails.css';
@@ -16,12 +16,12 @@ const UserDetails = props => {
   const findAttributes = () => {
     let attrs = {};
     if (props.user) {
-      attrs['id'] = props.user.getId();
-      attrs['username'] = props.user.getValue(SCIM_SCHEMA.username);
-      attrs['name'] = props.user.getValue(SCIM_SCHEMA.fullName);
-      attrs['email'] = value(props.user.getValue(SCIM_SCHEMA.email));
-      attrs['phone'] = value(props.user.getValue(SCIM_SCHEMA.phone));
-      attrs['birthday'] = props.user.getValue(SCIM_SCHEMA.birthday);
+      attrs['id'] = props.user.id();
+      attrs['username'] = props.user.get(SCIM_SCHEMA.username);
+      attrs['name'] = props.user.get(SCIM_SCHEMA.fullName);
+      attrs['email'] = value(props.user.get(SCIM_SCHEMA.email));
+      attrs['phone'] = value(props.user.get(SCIM_SCHEMA.phone));
+      attrs['birthday'] = props.user.get(SCIM_SCHEMA.birthday);
     } else if (props.claims) {
       const claims = props.claims;
       attrs['id'] = claims['sub'];
@@ -81,7 +81,7 @@ const UserDetails = props => {
 };
 
 UserDetails.propTypes = {
-  user: React.PropTypes.instanceOf(ScimResource)
+  user: React.PropTypes.instanceOf(Resource)
 };
 
 export default UserDetails;

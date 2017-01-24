@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ScimResource from '../util/Scim';
+import { Resource } from '@braveulysses/scim2';
 import SignedInMessage from '../components/SignedInMessage';
 import { readJsonFile } from '../util/TestHelpers';
 
@@ -9,7 +9,7 @@ const testClaims = readJsonFile(__dirname + '/resources/claims.json');
 
 describe('The SignedInMessage component', () => {
   it("correctly reports the username when given a SCIM resource object", () => {
-    const user = new ScimResource(testUser);
+    const user = new Resource(testUser);
     const wrapper = shallow(
         <SignedInMessage user={user}/>
     );
@@ -25,7 +25,7 @@ describe('The SignedInMessage component', () => {
 
   it("correctly reports the username when given both a " +
       "SCIM resource object and an OIDC claims object", () => {
-    const user = new ScimResource(testUser);
+    const user = new Resource(testUser);
     const wrapper = shallow(
         <SignedInMessage user={user} claims={testClaims}/>
     );

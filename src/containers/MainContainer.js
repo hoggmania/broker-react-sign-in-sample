@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 import Login from '../components/Login';
 import Home from '../components/Home';
 import Error from '../components/Error';
-import ScimResource from '../util/Scim';
+import { Resource } from '@braveulysses/scim2';
 import { getUserData, redirect } from '../util/Helpers';
 
 /**
@@ -46,7 +46,7 @@ class MainContainer extends Component {
           console.log("User resource fetch complete");
           this.setState({
             loadingMessage: null,
-            user: new ScimResource(json)
+            user: new Resource(json)
           });
         });
   }
