@@ -1,4 +1,4 @@
-# broker-react-sign-in-sample [![Build Status](https://travis-ci.org/UnboundID/broker-react-sign-in-sample.svg?branch=master)](https://travis-ci.org/UnboundID/broker-react-sign-in-sample)
+# broker-react-sign-in-sample [![Build Status](https://travis-ci.org/pingidentity/broker-react-sign-in-sample.svg?branch=master)](https://travis-ci.org/pingidentity/broker-react-sign-in-sample)
 
 ![React Sign In Sample animation](https://cloud.githubusercontent.com/assets/50972/21905894/af6b073a-d8ce-11e6-9a4a-a8eb520f9ecb.gif)
 
@@ -32,7 +32,7 @@ you may need to modify the attribute mappings in `src/Config.js`.
 Clone this repository:
 
 ```
-git clone https://github.com/UnboundID/broker-react-sign-in-sample.git
+git clone https://github.com/pingidentity/broker-react-sign-in-sample.git
 ```
 
 Install the application's dependencies:
@@ -213,7 +213,7 @@ is provided for demonstration purposes and is not necessarily intended
 to be production-ready.
 
 Please report issues using the project's
-[issue tracker](https://github.com/UnboundID/broker-react-sign-in-sample/issues).
+[issue tracker](https://github.com/pingidentity/broker-react-sign-in-sample/issues).
 
 ## License
 

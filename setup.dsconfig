@@ -4,7 +4,7 @@ dsconfig create-key-pair --pair-name sample-idtoken-key
 # Register the sample app as a Data Governance Broker client.
 dsconfig create-oauth2-client --client-name "React Sign In Sample" \
   --set "description:A sample client-side web application for the Data Governance Broker." \
-  --set url:https://github.com/UnboundID/broker-react-sign-in-sample \
+  --set url:https://github.com/pingidentity/broker-react-sign-in-sample \
   --set client-id:react-sign-in-sample \
   --set grant-type:implicit \
   --set redirect-url:http://localhost:3000/callback.html \
