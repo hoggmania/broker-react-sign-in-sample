@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { guid, authorizationUrl } from '../util/Helpers';
 import Storage from '../util/Storage';
 import { Container, Message, Button } from 'semantic-ui-react';
@@ -40,7 +41,7 @@ const Login = (props) => {
 };
 
 Login.propTypes = {
-  redirect: React.PropTypes.func.isRequired
+  redirect: PropTypes.func.isRequired
 };
 
 export default Login;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SignedInMessage from './SignedInMessage';
 import AuthenticationClaims from './AuthenticationClaims';
 import UserDetails from './UserDetails';
@@ -17,8 +18,8 @@ const Home = props => (
 );
 
 Home.propTypes = {
-  user: React.PropTypes.instanceOf(Resource),
-  claims: React.PropTypes.object
+  user: PropTypes.instanceOf(Resource),
+  claims: PropTypes.object
 };
 
 export default Home;

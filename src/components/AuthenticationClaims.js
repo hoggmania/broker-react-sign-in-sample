@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Container, Accordion, Icon, Table } from 'semantic-ui-react';
 import './AuthenticationClaims.css';
 
@@ -24,7 +25,7 @@ const ClaimsTable = props => {
 };
 
 ClaimsTable.propTypes = {
-  claims: React.PropTypes.object
+  claims: PropTypes.object
 };
 
 const AuthenticationClaims = props => {
@@ -46,7 +47,7 @@ const AuthenticationClaims = props => {
 };
 
 AuthenticationClaims.propTypes = {
-  claims: React.PropTypes.object
+  claims: PropTypes.object
 };
 
 export default AuthenticationClaims;

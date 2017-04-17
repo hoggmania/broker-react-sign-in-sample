@@ -11,3 +11,6 @@ Data Governance Broker 6.0.0.0.
 ## Maintenance release [1.0.1] - 2017-01-24
 Internal reorganization with no functional changes.
 Use the @braveulysses/scim2 package from NPM.
+
+## Maintenance release [1.0.2] - 2017-??-??
+Maintenance release with many updated dependencies, notably for React 15.5.

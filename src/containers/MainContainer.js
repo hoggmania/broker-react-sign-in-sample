@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Layout from '../components/Layout';
 import Loading from '../components/Loading';
 import Login from '../components/Login';
@@ -110,8 +111,8 @@ class MainContainer extends Component {
 }
 
 MainContainer.propTypes = {
-  accessToken: React.PropTypes.string,
-  claims: React.PropTypes.object
+  accessToken: PropTypes.string,
+  claims: PropTypes.object
 };
 
 export default MainContainer;

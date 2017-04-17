@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Resource } from '@braveulysses/scim2';
 import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
 import { Container, Table, Icon } from 'semantic-ui-react';
@@ -81,7 +82,7 @@ const UserDetails = props => {
 };
 
 UserDetails.propTypes = {
-  user: React.PropTypes.instanceOf(Resource)
+  user: PropTypes.instanceOf(Resource)
 };
 
 export default UserDetails;

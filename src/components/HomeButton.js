@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { APP_SETTINGS } from '../Config';
 import { Container, Button } from 'semantic-ui-react';
 
@@ -23,7 +24,7 @@ const HomeButton = (props) => {
 };
 
 HomeButton.propTypes = {
-  redirect: React.PropTypes.func.isRequired
+  redirect: PropTypes.func.isRequired
 };
 
 export default HomeButton;

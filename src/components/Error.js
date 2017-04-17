@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Container, Message, Icon } from 'semantic-ui-react';
 import HomeButton from './HomeButton';
 import { redirect } from '../util/Helpers';
@@ -20,8 +21,8 @@ const Error = props => (
 );
 
 Error.propTypes = {
-  error: React.PropTypes.string.isRequired,
-  errorDetail: React.PropTypes.string
+  error: PropTypes.string.isRequired,
+  errorDetail: PropTypes.string
 };
 
 export default Error;

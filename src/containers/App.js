@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import MainContainer from './MainContainer';
 
 /**
@@ -39,7 +40,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  storage: React.PropTypes.object.isRequired
+  storage: PropTypes.object.isRequired
 };
 
 export default App;

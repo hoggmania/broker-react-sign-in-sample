@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { guid, logoutUrl } from '../util/Helpers';
 import Storage from '../util/Storage';
 import { Container, Button } from 'semantic-ui-react';
@@ -34,7 +35,7 @@ const Logout = (props) => {
 };
 
 Logout.propTypes = {
-  redirect: React.PropTypes.func.isRequired
+  redirect: PropTypes.func.isRequired
 };
 
 export default Logout;

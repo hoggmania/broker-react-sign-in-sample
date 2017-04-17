@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Container, Message } from 'semantic-ui-react';
 import { Resource } from '@braveulysses/scim2';
 import { SCIM_SCHEMA, OIDC_SCHEMA } from '../Config';
@@ -43,8 +44,8 @@ class SignedInMessage extends Component {
 }
 
 SignedInMessage.propTypes = {
-  user: React.PropTypes.instanceOf(Resource),
-  claims: React.PropTypes.object
+  user: PropTypes.instanceOf(Resource),
+  claims: PropTypes.object
 };
 
 export default SignedInMessage;

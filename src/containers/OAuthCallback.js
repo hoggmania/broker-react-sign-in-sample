@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactRedirect from 'react-redirect';
 import { parseParamsFromUrl, getJwks } from '../util/Helpers';
 import JwsVerifier from '../util/JwsVerifier';
@@ -157,9 +158,9 @@ class OAuthCallback extends Component {
 }
 
 OAuthCallback.propTypes = {
-  url: React.PropTypes.string.isRequired,
-  storage: React.PropTypes.object.isRequired,
-  jwsVerifier: React.PropTypes.object.isRequired
+  url: PropTypes.string.isRequired,
+  storage: PropTypes.object.isRequired,
+  jwsVerifier: PropTypes.object.isRequired
 };
 
 OAuthCallback.defaultProps = {
